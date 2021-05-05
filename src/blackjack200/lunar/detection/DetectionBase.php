@@ -47,7 +47,7 @@ abstract class DetectionBase implements Detection {
     public function alert(string $message): void {
         foreach ($this->getUser()->getPlayer()->getServer()->getOnlinePlayers() as $onlinePlayer) {
             if ($onlinePlayer->hasPermission("lunar.alert.notify")) {
-                $onlinePlayer->sendMessage(" [ALERT] [{$this->user->getPlayer()->getName()}]: $this->name ($this->VL/{$this->getConfiguration()->getMaxVL()}) [$message]");
+                $onlinePlayer->sendMessage(" §e[ALERT]§7 [{$this->user->getPlayer()->getName()}]: $this->name ($this->VL/{$this->getConfiguration()->getMaxVL()}) [$message]");
             }
         }
     }
@@ -94,7 +94,7 @@ abstract class DetectionBase implements Detection {
 
         foreach ($this->getUser()->getPlayer()->getServer()->getOnlinePlayers() as $onlinePlayer) {
             if ($onlinePlayer->hasPermission("lunar.alert.notify")) {
-                $onlinePlayer->sendMessage(" [FAIL] [{$this->user->getPlayer()->getName()}]: $this->name ($this->VL/{$this->getConfiguration()->getMaxVL()})");
+                $onlinePlayer->sendMessage(" §c[FAIL]§7 [{$this->user->getPlayer()->getName()}]: $this->name ($this->VL/{$this->getConfiguration()->getMaxVL()})");
             }
         }
 
