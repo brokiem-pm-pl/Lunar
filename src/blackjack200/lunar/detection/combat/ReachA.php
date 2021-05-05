@@ -48,9 +48,7 @@ class ReachA extends DetectionBase {
         ) {
             $this->addVL(1, "max=$maxDist dist=$dist");
             $this->preVL = 2;
-            if ($this->getConfiguration()->isSuppress()) {
-                $event->setCancelled();
-            }
+            $event->setCancelled();
 
 			if ($this->overflowVL()) {
 				$this->fail("max=$maxDist dist=$dist");
@@ -62,6 +60,6 @@ class ReachA extends DetectionBase {
 	public function getAllowedDistance() : float {
         $player = $this->getUser()->getPlayer();
         $projected = $player->onGround ? 5.5 : 6.2;
-        return (60 * 0.002) + $projected;
+        return (mt_rand(50, 130) * 0.002) + $projected;
     }
 }

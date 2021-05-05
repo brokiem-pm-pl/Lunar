@@ -43,6 +43,7 @@ class MultiAura extends DetectionBase {
 		if (count($this->targets) >= $this->max && ($this->time + 0.20) >= microtime(true)) {
             $inTime = microtime(true) - ($this->time);
             $this->addVL(1, 'MultiAura detected');
+            $event->setCancelled();
             $this->alert(sprintf('AE=%s T=%s', count($this->targets), $inTime));
             if ($this->overflowVL()) {
                 $this->fail('MultiAura Detected');
