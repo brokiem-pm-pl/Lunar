@@ -45,6 +45,26 @@ abstract class DetectionBase implements Detection {
     }
 
     public function alert(string $message): void {
+        if ((int)$this->VL === 2 or (int)$this->VL === 5 or (int)$this->VL === 15 or (int)$this->VL === (int)$this->getConfiguration()->getMaxVL()) {
+            $embed = new Embed();
+            $embed->setTitle("Anti-Cheat Alert");
+            $desc = "Player: ``" . $this->getUser()->getPlayer()->getName() . "``\n";
+            $desc .= "Violations: ``" . $this->VL . "``\n";
+            $desc .= "Detection name: ``" . $this->name . "``\n";
+            $desc .= "Alert message: ``" . $message . "``\n";
+
+            $embed->setDescription($desc);
+            $embed->setColor(0xFFFF00);
+            $embed->setTimestamp(new \DateTime("now"));
+
+            $msg = new Message();
+            $msg->addEmbed($embed);
+
+            if (($webhook = Lunar::getInstance()->getWebhook()) !== null) {
+                $webhook->send($msg);
+            }
+        }
+
         foreach ($this->getUser()->getPlayer()->getServer()->getOnlinePlayers() as $onlinePlayer) {
             if ($onlinePlayer->hasPermission("lunar.alert.notify")) {
                 $onlinePlayer->sendMessage(" §e[ALERT]§7 [{$this->user->getPlayer()->getName()}]: $this->name ($this->VL/{$this->getConfiguration()->getMaxVL()}) [$message]");
@@ -72,26 +92,6 @@ abstract class DetectionBase implements Detection {
 	final public function getConfiguration() : DetectionConfiguration { return $this->configuration; }
 
 	public function fail(string $message) : void {
-        if ((int)$this->VL === 2 or (int)$this->VL === 5 or (int)$this->VL === 15) {
-            $embed = new Embed();
-            $embed->setTitle("Anti-Cheat Alert");
-            $desc = "Player: ``" . $this->getUser()->getPlayer()->getName() . "``\n";
-            $desc .= "Violations: ``" . $this->VL . "``\n";
-            $desc .= "Detection name: ``" . $this->name . "``\n";
-            $desc .= "Alert message: ``" . $message . "``\n";
-
-            $embed->setDescription($desc);
-            $embed->setColor(0xFFFF00);
-            $embed->setTimestamp(new \DateTime("now"));
-
-            $msg = new Message();
-            $msg->addEmbed($embed);
-
-            if (($webhook = Lunar::getInstance()->getWebhook()) !== null) {
-                $webhook->send($msg);
-            }
-        }
-
         foreach ($this->getUser()->getPlayer()->getServer()->getOnlinePlayers() as $onlinePlayer) {
             if ($onlinePlayer->hasPermission("lunar.alert.notify")) {
                 $onlinePlayer->sendMessage(" §c[FAIL]§7 [{$this->user->getPlayer()->getName()}]: $this->name ($this->VL/{$this->getConfiguration()->getMaxVL()})");

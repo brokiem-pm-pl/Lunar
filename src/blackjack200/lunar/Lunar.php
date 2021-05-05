@@ -37,6 +37,10 @@ class Lunar extends PluginBase {
     public function getWebhookFormat(): ?string { return $this->webhookFormat; }
 
     public function onLoad(): void {
+        if (is_file($this->getDataFolder() . "config.yml")) {
+            @unlink($this->getDataFolder() . "config.yml");
+        }
+
         self::$instance = $this;
     }
 
