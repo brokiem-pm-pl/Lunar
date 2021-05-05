@@ -6,6 +6,8 @@ Prefix: "§7[§fLunar§7]"
 Format: "[DETECTION_NAME]: [MSG]"
 # Replace Config file by default
 Replace: true
+
+webhook-url: null
 # Punishment(BAN, KICK, ALERT, IGNORE)
 
 # Check for wrong edition provided and DeviceModel

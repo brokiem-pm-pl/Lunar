@@ -74,7 +74,7 @@ class Lunar extends PluginBase {
         $this->detectionLogger->shutdown();
     }
 
-    public function getWebhook(): Webhook {
+    public function getWebhook(): ?Webhook {
         return $this->webhook;
     }
 }
