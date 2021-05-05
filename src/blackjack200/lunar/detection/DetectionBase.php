@@ -12,7 +12,6 @@ use blackjack200\lunar\user\User;
 use blackjack200\lunar\utils\Objects;
 use pocketmine\network\mcpe\protocol\DataPacket;
 use pocketmine\scheduler\ClosureTask;
-use pocketmine\Server;
 use pocketmine\utils\TextFormat;
 
 abstract class DetectionBase implements Detection {
@@ -76,9 +75,11 @@ abstract class DetectionBase implements Detection {
 
 	public function fail(string $message) : void {
 		if ($this->webhookFmt !== null) {
-			GlobalBot::send($this->format($this->webhookFmt, TextFormat::clean($message), false));
+		    if ((int)$this->VL === 2 and (int)$this->VL === 5 and (int)$this->VL === 15 and (int)$this->VL === (int)$this->getConfiguration()->getMaxVL()) {
+                GlobalBot::send($this->format($this->webhookFmt, TextFormat::clean($message), false));
+            }
 		}
-		Lunar::getInstance()->getScheduler()->scheduleTask(new ClosureTask(function (int $tick) use ($message) : void {
+		Lunar::getInstance()->getScheduler()->scheduleTask(new ClosureTask(function () use ($message) : void {
 			$this->failImpl($message);
 		}));
 	}
@@ -87,18 +88,14 @@ abstract class DetectionBase implements Detection {
 		$this->log($message);
 		switch ($this->getConfiguration()->getPunishment()) {
 			case Punishment::BAN():
-				Server::getInstance()->getNameBans()->addBan($this->getUser()->getPlayer()->getName(), $message);
-				$this->kick($message);
-				break;
+            case Punishment::KICK():
+                $this->kick($message);
+                break;
 			case Punishment::WARN():
 				$msg = TextFormat::RED . TextFormat::BOLD . $message;
 				$this->alertTitle($msg);
 				$this->alert($msg);
 				$this->reset();
-				break;
-			case Punishment::KICK():
-				$this->kick($message);
-				break;
 		}
 	}
 
@@ -110,9 +107,34 @@ abstract class DetectionBase implements Detection {
 
 	final public function getUser() : User { return $this->user; }
 
+    public function generateCode(int $length = 5): string {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[mt_rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
+    }
+
 	public function kick(string $message) : void {
-		$this->getUser()->getPlayer()->kick($this->format($this->fmt, $message), false);
-	}
+        $code = $this->generateCode();
+        $player = $this->getUser()->getPlayer();
+        $type = $this->name;
+
+        $desc = "**Anti-cheat Punishment**\n";
+        $desc .= "Player: ``" . $player->getName() . "``\n";
+        $desc .= "Type: ``" . $type . "``\n";
+        $desc .= "Code: ``" . $code . "``\n";
+        $desc .= "Detection name: ``" . $this->name . "``\n";
+        $desc .= "Message kicked: ``" . $this->format($this->fmt, $message) . "``\n";
+
+        if ($this->webhookFmt !== null) {
+            GlobalBot::send($desc);
+        }
+
+        $player->kick("0 " . Lunar::getInstance()->getPrefix() . "§l> §rKicked (code=" . $code . ")\nContact staff with a screenshot of this message if this issue persists", false);
+    }
 
 	public function alertTitle(string $message) : void {
 		$this->getUser()->getPlayer()->sendTitle('§g', $this->format($this->fmt, $message), 2, 3, 5);
@@ -148,7 +170,7 @@ abstract class DetectionBase implements Detection {
 			$pos = $user->getMovementInfo()->locationHistory->pop();
 			if ($pos !== null) {
 				$player = $user->getPlayer();
-				$player->teleport($pos, $user->getMovementInfo()->location->yaw);
+				$player->teleport($pos, $player->yaw);
 			}
 		}
 	}
