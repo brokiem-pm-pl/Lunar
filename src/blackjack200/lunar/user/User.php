@@ -55,33 +55,39 @@ final class User implements DetectionTrigger {
 			$detection->finalize();
 		}
 
-		foreach ($this->processors as $processor) {
-			$processor->finalize();
-		}
+        foreach ($this->processors as $processor) {
+            $processor->finalize();
+        }
 
-		$this->detections = [];
-		$this->processors = [];
-	}
+        $this->detections = [];
+        $this->processors = [];
+    }
 
-	public function isClosed() : bool { return $this->closed; }
+    public function isClosed(): bool { return $this->closed; }
 
-	public function trigger(string $class, ...$data) : void {
-		$detection = $this->detections[$class] ?? null;
-		if ($detection !== null) {
-			$detection->check(...$data);
-		}
-	}
+    /**
+     * @param mixed $data
+     */
+    public function trigger(string $class, ...$data): void {
+        $detection = $this->detections[$class] ?? null;
+        if ($detection !== null) {
+            $detection->check(...$data);
+        }
+    }
 
-	public function triggerProcessor(string $class, ...$data) : void {
-		$processor = $this->processors[$class] ?? null;
-		if ($processor !== null) {
-			$processor->check(...$data);
-		}
-	}
+    /**
+     * @param mixed $data
+     */
+    public function triggerProcessor(string $class, ...$data): void {
+        $processor = $this->processors[$class] ?? null;
+        if ($processor !== null) {
+            $processor->check(...$data);
+        }
+    }
 
-	public function getDetections() : array { return $this->detections; }
+    public function getDetections(): array { return $this->detections; }
 
-	public function getProcessors() : array { return $this->processors; }
+    public function getProcessors(): array { return $this->processors; }
 
 	public function getPlayer() : Player { return $this->player; }
 

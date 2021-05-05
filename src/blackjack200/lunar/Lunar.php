@@ -72,7 +72,6 @@ class Lunar extends PluginBase {
 
     public function onDisable(): void {
         $this->detectionLogger->shutdown();
-        GlobalBot::set(null);
     }
 
     public function getWebhook(): Webhook {

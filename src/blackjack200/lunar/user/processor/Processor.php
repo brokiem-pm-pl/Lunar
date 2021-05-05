@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 
 namespace blackjack200\lunar\user\processor;
 
@@ -9,18 +9,18 @@ use pocketmine\event\Listener;
 use pocketmine\network\mcpe\protocol\DataPacket;
 
 abstract class Processor implements Listener {
-	/** @var User */
-	private $user;
 
-	public function __construct(User $user) {
-		$this->user = $user;
-	}
+    private ?User $user;
 
-	public function processServerBond(DataPacket $packet) : void { }
+    public function __construct(User $user) {
+        $this->user = $user;
+    }
 
-	public function processClient(DataPacket $packet) : void { }
+    public function processServerBond(DataPacket $packet): void { }
 
-	final public function __destruct() {
+    public function processClient(DataPacket $packet): void { }
+
+    final public function __destruct() {
         $this->destruct();
     }
 

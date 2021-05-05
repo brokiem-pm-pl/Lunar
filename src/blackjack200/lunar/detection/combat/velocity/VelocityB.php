@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 
 namespace blackjack200\lunar\detection\combat\velocity;
 
