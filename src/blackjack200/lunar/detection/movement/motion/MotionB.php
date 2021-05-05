@@ -19,25 +19,25 @@ class MotionB extends DetectionBase {
                 $info->checkFly &&
                 !$user->getActionInfo()->isFlying &&
                 $info->timeSinceTeleport() > 2 &&
-                $user->timeSinceJoin() > 5 &&
+                $user->timeSinceJoin() > 10 &&
                 $user->getExpiredInfo()->duration('flight') > 2 &&
                 $user->getExpiredInfo()->duration('checkFly') > 0.25
 			) {
-				$deltaY = $info->moveDelta->y;
+                $deltaY = $info->moveDelta->y;
 
-				$modifierJump = $user->getEffectLevel(Effect::JUMP) * 0.1;
-				$modifierVelocity = $info->timeSinceMotion() < 0.25 ? $info->velocity->y + 0.5 : 0.0;
+                $modifierJump = $user->getEffectLevel(Effect::JUMP) * 0.1;
+                $modifierVelocity = $info->timeSinceMotion() < 0.25 ? $info->velocity->y + 0.5 : 0.0;
 
-				$maximum = 0.6 + $modifierJump + $modifierVelocity;
+                $maximum = 0.8 + $modifierJump + $modifierVelocity;
 
-				if ($deltaY > $maximum) {
+                if ($deltaY > $maximum) {
                     $this->addVL(1, "dy=$deltaY pred_max=$maximum");
                     $this->revertMovement();
-					if ($this->overflowVL()) {
-						$this->fail("dy=$deltaY pred_max=$maximum");
-					}
-				}
-			}
+                    if ($this->overflowVL()) {
+                        $this->fail("dy=$deltaY pred_max=$maximum");
+                    }
+                }
+            }
 		}
 	}
 }

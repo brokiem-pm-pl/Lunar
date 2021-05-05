@@ -17,14 +17,14 @@ class FlyA extends DetectionBase {
 			$player = $user->getPlayer();
 			if (
 				!$info->inVoid &&
-				$info->checkFly &&
-				$info->inAirTick > 7 &&
-				!$info->onGround &&
-				!$action->isFlying &&
-				$info->timeSinceTeleport() > 2 &&
-				$info->timeSinceMotion() > 1 &&
-				$user->timeSinceJoin() > 5 &&
-				!$player->isCreative() &&
+                $info->checkFly &&
+                $info->inAirTick > 7 &&
+                !$info->onGround &&
+                !$action->isFlying &&
+                $info->timeSinceTeleport() > 2 &&
+                $info->timeSinceMotion() > 1 &&
+                $user->timeSinceJoin() > 10 &&
+                !$player->isCreative() &&
 				$user->getExpiredInfo()->duration('flight') > 1 &&
 				$user->getExpiredInfo()->duration('checkFly') > 1
 			) {

@@ -28,13 +28,13 @@ class FlyE extends DetectionBase {
 			$lastDeltaY = $info->lastMoveDelta->y;
 			if (
 				!$info->onGround &&
-				!$info->inVoid &&
-				$info->checkFly &&
-				!$user->getActionInfo()->isFlying &&
-				$info->timeSinceTeleport() > 2 &&
-				$info->timeSinceMotion() > 0.25 &&
-				$user->timeSinceJoin() > 5 &&
-				!$player->isCreative() &&
+                !$info->inVoid &&
+                $info->checkFly &&
+                !$user->getActionInfo()->isFlying &&
+                $info->timeSinceTeleport() > 2 &&
+                $info->timeSinceMotion() > 0.25 &&
+                $user->timeSinceJoin() > 10 &&
+                !$player->isCreative() &&
 				abs($deltaY) < 3 &&
 				abs($lastDeltaY) < 3 &&
 				$user->getExpiredInfo()->duration('checkFly') > 0.25
