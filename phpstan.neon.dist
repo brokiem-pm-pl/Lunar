@@ -1,0 +1,9 @@
+parameters:
+  paths:
+    - /source/src
+  level: 6
+  bootstrapFiles:
+    - phar:///pocketmine/PocketMine-MP.phar/vendor/autoload.php
+  reportUnmatchedIgnoredErrors: false
+  checkMissingIterableValueType: false
+  checkGenericClassInNonGenericObjectType: false

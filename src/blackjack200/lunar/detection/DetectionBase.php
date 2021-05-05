@@ -6,7 +6,8 @@ namespace blackjack200\lunar\detection;
 
 use blackjack200\lunar\configuration\DetectionConfiguration;
 use blackjack200\lunar\configuration\Punishment;
-use blackjack200\lunar\GlobalBot;
+use blackjack200\lunar\libs\CortexPE\DiscordWebhookAPI\Embed;
+use blackjack200\lunar\libs\CortexPE\DiscordWebhookAPI\Message;
 use blackjack200\lunar\Lunar;
 use blackjack200\lunar\user\User;
 use blackjack200\lunar\utils\Objects;
@@ -15,8 +16,8 @@ use pocketmine\scheduler\ClosureTask;
 use pocketmine\utils\TextFormat;
 
 abstract class DetectionBase implements Detection {
-	protected float $preVL = 0;
-	protected float $VL = 0;
+    protected float $preVL = 0;
+    protected float $VL = 0;
 	/** @var User */
 	private $user;
 	/** @var mixed */
@@ -48,8 +49,12 @@ abstract class DetectionBase implements Detection {
 	}
 
 	public function alert(string $message) : void {
-		$this->user->getPlayer()->sendMessage($this->format($this->fmt, $message));
-	}
+        foreach ($this->getUser()->getPlayer()->getServer()->getOnlinePlayers() as $onlinePlayer) {
+            if ($onlinePlayer->hasPermission("lunar.alert.notify")) {
+                $onlinePlayer->sendMessage($this->format($this->fmt, $message));
+            }
+        }
+    }
 
 	final protected function format(string $fmt, string $message, bool $prefix = true) : string {
 		$cfg = $this->getConfiguration();
@@ -74,15 +79,36 @@ abstract class DetectionBase implements Detection {
 	final public function getConfiguration() : DetectionConfiguration { return $this->configuration; }
 
 	public function fail(string $message) : void {
-		if ($this->webhookFmt !== null) {
-		    if ((int)$this->VL === 2 and (int)$this->VL === 5 and (int)$this->VL === 15 and (int)$this->VL === (int)$this->getConfiguration()->getMaxVL()) {
-                GlobalBot::send($this->format($this->webhookFmt, TextFormat::clean($message), false));
+        if ($this->VL === 2 or (int)$this->VL === 10 or (int)$this->VL === 20) {
+            $embed = new Embed();
+            $embed->setTitle("Anti-Cheat Alert");
+            $desc = "Player: ``" . $this->getUser()->getPlayer()->getName() . "``\n";
+            $desc .= "Violations: ``" . $this->VL . "``\n";
+            $desc .= "Detection name: ``" . $this->name . "``\n";
+            $desc .= "Alert message: ``" . $message . "``\n";
+
+            $embed->setDescription($desc);
+            $embed->setColor(0xFFFF00);
+            $embed->setTimestamp(new \DateTime("now"));
+
+            $msg = new Message();
+            $msg->addEmbed($embed);
+
+            if (($webhook = Lunar::getInstance()->getWebhook()) !== null) {
+                $webhook->send($msg);
             }
-		}
-		Lunar::getInstance()->getScheduler()->scheduleTask(new ClosureTask(function () use ($message) : void {
-			$this->failImpl($message);
-		}));
-	}
+        }
+
+        foreach ($this->getUser()->getPlayer()->getServer()->getOnlinePlayers() as $onlinePlayer) {
+            if ($onlinePlayer->hasPermission("lunar.alert.notify")) {
+                $onlinePlayer->sendMessage($this->format($this->fmt, $message));
+            }
+        }
+
+        Lunar::getInstance()->getScheduler()->scheduleTask(new ClosureTask(function() use ($message): void {
+            $this->failImpl($message);
+        }));
+    }
 
 	final protected function failImpl(string $message) : void {
 		$this->log($message);
@@ -122,15 +148,23 @@ abstract class DetectionBase implements Detection {
         $player = $this->getUser()->getPlayer();
         $type = $this->name;
 
-        $desc = "**Anti-cheat Punishment**\n";
-        $desc .= "Player: ``" . $player->getName() . "``\n";
+        $embed = new Embed();
+        $embed->setTitle("Anti-Cheat Punishment");
+        $desc = "Player: ``" . $player->getName() . "``\n";
         $desc .= "Type: ``" . $type . "``\n";
         $desc .= "Code: ``" . $code . "``\n";
         $desc .= "Detection name: ``" . $this->name . "``\n";
-        $desc .= "Message kicked: ``" . $this->format($this->fmt, $message) . "``\n";
+        $desc .= "Message kicked: ``" . $this->format($this->fmt, $message, false) . "``\n";
 
-        if ($this->webhookFmt !== null) {
-            GlobalBot::send($desc);
+        $embed->setDescription($desc);
+        $embed->setColor(0xFF0000);
+        $embed->setTimestamp(new \DateTime("now"));
+
+        $msg = new Message();
+        $msg->addEmbed($embed);
+
+        if (($webhook = Lunar::getInstance()->getWebhook()) !== null) {
+            $webhook->send($msg);
         }
 
         $player->kick("0 " . Lunar::getInstance()->getPrefix() . "§l> §rKicked (code=" . $code . ")\nContact staff with a screenshot of this message if this issue persists", false);
