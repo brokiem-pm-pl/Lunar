@@ -17,16 +17,16 @@ final class DetectionConfiguration {
 	private bool $suppress;
 
 	public function __construct(string $class, string $name, array $data, bool $recursiveObject) {
-		$this->class = $class;
-		$this->name = $name;
-		$this->punishment = Punishment::fromString($data['Punishment']);
-		$this->enable = $data['Enable'];
-		$this->maxVL = $data['MaxVL'] ?? -1;
-		$this->reward = $data['Reward'] ?? 1;
-		$this->suppress = $data['Suppress'] ?? false;
-		unset($data['Punishment'], $data['Enable'], $data['MaxVL'], $data['Reward'], $data['Suppress']);
-		$this->extraData = $recursiveObject ? Objects::convert($data) : (object) $data;
-	}
+        $this->class = $class;
+        $this->name = $name;
+        $this->punishment = Punishment::KICK();
+        $this->enable = $data['Enable'];
+        $this->maxVL = $data['MaxVL'] ?? 50;
+        $this->reward = $data['Reward'] ?? 1;
+        $this->suppress = $data['Suppress'] ?? false;
+        unset($data['Punishment'], $data['Enable'], $data['MaxVL'], $data['Reward'], $data['Suppress']);
+        $this->extraData = $recursiveObject ? Objects::convert($data) : (object)$data;
+    }
 
 	public function getClass() : string { return $this->class; }
 

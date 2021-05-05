@@ -13,36 +13,34 @@ use pocketmine\plugin\PluginBase;
 use Throwable;
 
 class Lunar extends PluginBase {
-	/** @var self */
-	private static $instance;
-	/** @var string */
-	private $prefix;
-	/** @var string */
-	private $format;
-	/** @var DetectionLogger */
-	private $detectionLogger;
-	/** @var string|null */
-    private $webhookFormat;
+
+    private static $instance;
+
+    private string $prefix;
+
+    private string $format;
+
+    private DetectionLogger $detectionLogger;
+
+    private ?string $webhookFormat = null;
+
     private ?Webhook $webhook;
 
     public static function getInstance(): Lunar { return self::$instance; }
 
-	public function getDetectionLogger() : DetectionLogger { return $this->detectionLogger; }
+    public function getDetectionLogger(): DetectionLogger { return $this->detectionLogger; }
 
-	public function getPrefix() : string { return $this->prefix; }
+    public function getPrefix(): string { return $this->prefix; }
 
-	public function getFormat() : string { return $this->format; }
+    public function getFormat(): string { return $this->format; }
 
 	public function getWebhookFormat() : ?string { return $this->webhookFormat; }
 
 	public function onEnable() : void {
 		self::$instance = $this;
 
-		$this->getServer()->getPluginManager()->registerEvents(new DefaultListener(), $this);
-
 		$config = $this->getConfig();
 		$this->saveResource('config.yml', $config->get('Replace'));
-		$this->saveResource('webhook.yml');
 		$this->reloadConfig();
 
         $this->prefix = $config->get('Prefix', true);
@@ -56,7 +54,7 @@ class Lunar extends PluginBase {
 			$this->getLogger()->logException($e);
 			$this->getServer()->getPluginManager()->disablePlugin($this);
 			return;
-		}
+        }
 
         $this->getScheduler()->scheduleRepeatingTask(new ProcessorTickTrigger(), 1);
         $this->getScheduler()->scheduleRepeatingTask(new ProcessorSecondTrigger(), 20);
@@ -66,6 +64,8 @@ class Lunar extends PluginBase {
 
         $this->detectionLogger = new DetectionLogger($this->getDataFolder() . 'detections.log');
         $this->detectionLogger->start();
+
+        $this->getServer()->getPluginManager()->registerEvents(new DefaultListener(), $this);
 
         $this->webhook = $this->getConfig()->get("webhook-url", null) !== null ? new Webhook($this->getConfig()->get("webhook-url")) : null;
     }

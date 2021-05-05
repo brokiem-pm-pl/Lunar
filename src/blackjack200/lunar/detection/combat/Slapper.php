@@ -33,16 +33,15 @@ class Slapper extends Human {
 
 	public function attack(EntityDamageEvent $source) : void {
 		if ($source instanceof EntityDamageByEntityEvent &&
-			microtime(true) - $this->last > $this->attackCooldown &&
-			$source->getDamager() === $this->killAura->getUser()->getPlayer()
-		) {
-			$this->killAura->addVL(1);
-			$this->last = microtime(true);
-			if ($this->killAura->overflowVL()) {
-				$this->killAura->fail('HIT');
-			}
-			$source->setModifier(-$source->getFinalDamage(), EntityDamageEvent::MODIFIER_RESISTANCE);
-		}
+            microtime(true) - $this->last > $this->attackCooldown &&
+            $source->getDamager() === $this->killAura->getUser()->getPlayer()) {
+            $this->killAura->addVL(1);
+            $this->last = microtime(true);
+            if ($this->killAura->overflowVL()) {
+                $this->killAura->fail('HIT');
+            }
+            $source->setModifier(-$source->getFinalDamage(), EntityDamageEvent::MODIFIER_RESISTANCE);
+        }
 		parent::attack($source);
 	}
 }

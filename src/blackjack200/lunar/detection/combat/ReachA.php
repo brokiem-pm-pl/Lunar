@@ -29,27 +29,26 @@ class ReachA extends DetectionBase {
 		$user = $this->getUser();
 		$user2 = UserManager::get($damaged);
 		//should not happened
-		assert($user2 !== null);
-		assert($damager === $this->getUser()->getPlayer());
+        assert($user2 !== null);
+        assert($damager === $this->getUser()->getPlayer());
 
-		if ($damager->isCreative()) {
-			return;
-		}
-		$maxDist = $this->getAllowedDistance();
-		$dist = $damager->distance($event->getEntity());
-		$info = $user->getMovementInfo();
-		$info2 = $user2->getMovementInfo();
-		if (
-			$dist > $maxDist &&
+        if ($damager->isCreative()) {
+            return;
+        }
+        $maxDist = $this->getAllowedDistance();
+        $dist = $damager->distance($event->getEntity());
+        $info = $user->getMovementInfo();
+        $info2 = $user2->getMovementInfo();
+        if ($dist > $maxDist &&
             $info->timeSinceMotion() > 0.2 &&
             $info->timeSinceTeleport() > 1.5 &&
             $info2->timeSinceMotion() > 0.2 &&
             $info2->timeSinceTeleport() > 1.5 &&
             $this->preVL++ > 3
-		) {
-			$this->addVL(1);
-			$this->preVL = 2;
-			if ($this->getConfiguration()->isSuppress()) {
+        ) {
+            $this->addVL(1);
+            $this->preVL = 2;
+            if ($this->getConfiguration()->isSuppress()) {
                 $event->setCancelled();
             }
 

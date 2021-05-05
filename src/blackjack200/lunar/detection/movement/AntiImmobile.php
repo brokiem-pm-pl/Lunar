@@ -22,22 +22,18 @@ class AntiImmobile extends DetectionBase {
 
 	public function handleClient(DataPacket $packet) : void {
 		if ($packet instanceof MovePlayerPacket) {
-			$user = $this->getUser();
-			$info = $user->getMovementInfo();
-			$dist = $info->moveDelta->distanceSquared(self::$zero);
-			if (
-				$info->immobileTick > 2 &&
-                $dist > 0 &&
-                $info->timeSinceTeleport() > 0.08
-			) {
-				$msg = "dist=$dist";
-				$this->addVL(1, $msg);
-				if ($this->overflowVL()) {
-					$this->fail($msg);
-					return;
-				}
-				$this->revertMovement();
-			}
-		}
+            $user = $this->getUser();
+            $info = $user->getMovementInfo();
+            $dist = $info->moveDelta->distanceSquared(self::$zero);
+            if ($info->immobileTick > 2 && $dist > 0 && $info->timeSinceTeleport() > 0.08) {
+                $msg = "dist=$dist";
+                $this->addVL(1, $msg);
+                if ($this->overflowVL()) {
+                    $this->fail($msg);
+                    return;
+                }
+                $this->revertMovement();
+            }
+        }
 	}
 }
