@@ -38,7 +38,7 @@ abstract class DetectionBase implements Detection {
 
     /** @param numeric $VL */
     public function addVL($VL, ?string $message = null): void {
-        if (!$this->getUser()->getPlayer()->isOnline()) {
+        if ($this->getUser()->isKicked) {
             return;
         }
 
@@ -96,7 +96,7 @@ abstract class DetectionBase implements Detection {
 	final public function getConfiguration() : DetectionConfiguration { return $this->configuration; }
 
 	public function fail(string $message) : void {
-        if (!$this->getUser()->getPlayer()->isOnline()) {
+        if ($this->getUser()->isKicked) {
             return;
         }
 
@@ -144,9 +144,11 @@ abstract class DetectionBase implements Detection {
         $player = $this->getUser()->getPlayer();
         $type = $this->name;
 
-        if (!$player->isOnline()) {
+        if ($this->getUser()->isKicked) {
             return;
         }
+
+        $this->getUser()->isKicked = true;
 
         $this->log($message, $code);
 

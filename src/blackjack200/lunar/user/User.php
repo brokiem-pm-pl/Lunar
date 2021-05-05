@@ -21,26 +21,27 @@ final class User implements DetectionTrigger {
 	public StartGamePacket $startGame;
 	public int $CPS = 0;
 	public float $lastHurt;
-	private Player $player;
-	/** @var Detection[] */
-	private array $detections;
-	/** @var Processor[] */
-	private array $processors = [];
-	private PlayerMovementInfo $moveData;
-	private PlayerActionInfo $actionInfo;
-	private ExpiredInfo $expiredInfo;
-	private float $joinTime;
-	private bool $closed = false;
+    private Player $player;
+    /** @var Detection[] */
+    private array $detections;
+    /** @var Processor[] */
+    private array $processors = [];
+    private PlayerMovementInfo $moveData;
+    private PlayerActionInfo $actionInfo;
+    private ExpiredInfo $expiredInfo;
+    private float $joinTime;
+    private bool $closed = false;
+    public bool $isKicked = false;
 
-	public function __construct(Player $player) {
-		$this->player = $player;
-		$this->joinTime = microtime(true);
-		$this->lastHurt = microtime(true);
-		$this->moveData = new PlayerMovementInfo();
-		$this->actionInfo = new PlayerActionInfo();
-		$this->expiredInfo = new ExpiredInfo(32);
-		$this->processors[LoginProcessor::class] = new LoginProcessor($this);
-		$this->processors[InGameProcessor::class] = new InGameProcessor($this);
+    public function __construct(Player $player) {
+        $this->player = $player;
+        $this->joinTime = microtime(true);
+        $this->lastHurt = microtime(true);
+        $this->moveData = new PlayerMovementInfo();
+        $this->actionInfo = new PlayerActionInfo();
+        $this->expiredInfo = new ExpiredInfo(32);
+        $this->processors[LoginProcessor::class] = new LoginProcessor($this);
+        $this->processors[InGameProcessor::class] = new InGameProcessor($this);
 		$this->processors[MovementProcessor::class] = new MovementProcessor($this);
 		$this->processors[PlayerActionProcessor::class] = new PlayerActionProcessor($this);
 
