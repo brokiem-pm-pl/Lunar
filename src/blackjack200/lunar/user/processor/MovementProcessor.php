@@ -62,25 +62,26 @@ class MovementProcessor extends Processor {
 					if ($this->buffer++ > 4) {
 						$this->buffer = 0;
 						$info->locationHistory->push($player->asLocation());
-					}
-					$AABB = AABB::fromPosition($location)->expandedCopy(0.5, 0.2, 0.5);
-					$verticalBlocks = AABB::getCollisionBlocks($location->getLevel(), $AABB);
-					$info->lastOnGround = $info->onGround;
-					$info->onGround = count($player->getLevelNonNull()->getCollisionBlocks($AABB, true)) !== 0;
-					$info->lastActualOnGround = $info->actualOnGround;
-					$info->actualOnGround = $info->onGround;
-					$info->onIce = false;
+                    }
+                    $AABB = AABB::fromPosition($location)->expandedCopy(0.5, 0.2, 0.5);
+                    $verticalBlocks = AABB::getCollisionBlocks($location->getLevel(), $AABB);
+                    $info->lastOnGround = $info->onGround;
+                    $info->onGround = count($player->getLevelNonNull()->getCollisionBlocks($AABB, true)) !== 0;
+                    $info->lastActualOnGround = $info->actualOnGround;
+                    $info->actualOnGround = $info->onGround;
+                    $info->onIce = false;
 
-					$info->inVoid = $location->y < -15;
-					$info->checkFly = !$player->isImmobile() && !$player->hasEffect(Effect::LEVITATION);
-					foreach ($verticalBlocks as $block) {
-						/** @var Block $block */
-						$id = $block->getId();
-						if (in_array($id, self::ICE, true)) {
-							$user->getExpiredInfo()->set('ice');
-							$info->onIce = true;
-							continue;
-						}
+                    $info->inVoid = $location->y < -15;
+                    $info->inVoid2 = $location->y < -2;
+                    $info->checkFly = !$player->isImmobile() && !$player->hasEffect(Effect::LEVITATION);
+                    foreach ($verticalBlocks as $block) {
+                        /** @var Block $block */
+                        $id = $block->getId();
+                        if (in_array($id, self::ICE, true)) {
+                            $user->getExpiredInfo()->set('ice');
+                            $info->onIce = true;
+                            continue;
+                        }
 
 						if (
 							$id === Block::SLIME_BLOCK ||

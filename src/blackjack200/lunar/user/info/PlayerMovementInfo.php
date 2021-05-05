@@ -14,7 +14,8 @@ class PlayerMovementInfo {
 	public bool $actualOnGround = true;
 
 	public bool $inVoid = false;
-	public bool $onIce = false;
+    public bool $inVoid2 = false;
+    public bool $onIce = false;
 	//collied with transparent, liquid, climbing block and levitation immobile
 	public bool $checkFly = true;
 
