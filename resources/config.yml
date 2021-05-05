@@ -74,11 +74,11 @@ MultiAura:
   Enable: true
   Punishment: KICK
   MaxVL: 30
-  MaxEntityHit: 4
+  MaxEntityHit: 3
 
 # Basic attack distance check
 ReachA:
-  Enable: false
+  Enable: true
   Punishment: KICK
   MaxVL: 30
 

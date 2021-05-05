@@ -13,7 +13,6 @@ use blackjack200\lunar\user\User;
 use blackjack200\lunar\utils\Objects;
 use pocketmine\network\mcpe\protocol\DataPacket;
 use pocketmine\scheduler\ClosureTask;
-use pocketmine\utils\TextFormat;
 
 abstract class DetectionBase implements Detection {
     protected float $preVL = 0;
@@ -24,7 +23,6 @@ abstract class DetectionBase implements Detection {
 	private $configuration;
 	private string $name;
 	private string $fmt;
-	private ?string $webhookFmt;
 
 	/**
 	 * @param DetectionConfiguration $data
@@ -33,7 +31,6 @@ abstract class DetectionBase implements Detection {
 		$this->user = $user;
 		$this->name = $name;
 		$this->fmt = $fmt;
-		$this->webhookFmt = $webhookFmt;
 		$this->configuration = $data;
 	}
 
@@ -111,27 +108,23 @@ abstract class DetectionBase implements Detection {
     }
 
 	final protected function failImpl(string $message) : void {
-		$this->log($message);
-		switch ($this->getConfiguration()->getPunishment()) {
-			case Punishment::BAN():
+        $this->log($message);
+        switch ($this->getConfiguration()->getPunishment()) {
+            case Punishment::BAN():
             case Punishment::KICK():
+            case Punishment::WARN():
                 $this->kick($message);
                 break;
-			case Punishment::WARN():
-				$msg = TextFormat::RED . TextFormat::BOLD . $message;
-				$this->alertTitle($msg);
-				$this->alert($msg);
-				$this->reset();
-		}
-	}
+        }
+    }
 
-	public function log(string $message) : void {
-		$fmt = sprintf('[%s] NAME=%s DETECTION=%s MSG=%s', time(), $this->getUser()->getPlayer()->getName(), $this->name, $message);
-		Lunar::getInstance()->getLogger()->info($fmt);
-		Lunar::getInstance()->getDetectionLogger()->write($fmt);
-	}
+    public function log(string $message, string $code = "null"): void {
+        $fmt = sprintf('[%s] Code: %s, Name: %s, Detection: %s, Message: %s', time(), $code, $this->getUser()->getPlayer()->getName(), $this->name, $message);
+        Lunar::getInstance()->getLogger()->info($fmt);
+        Lunar::getInstance()->getDetectionLogger()->write($fmt);
+    }
 
-	final public function getUser() : User { return $this->user; }
+    final public function getUser(): User { return $this->user; }
 
     public function generateCode(int $length = 5): string {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -147,6 +140,8 @@ abstract class DetectionBase implements Detection {
         $code = $this->generateCode();
         $player = $this->getUser()->getPlayer();
         $type = $this->name;
+
+        $this->log($message, $code);
 
         $embed = new Embed();
         $embed->setTitle("Anti-Cheat Punishment");
