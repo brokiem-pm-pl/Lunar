@@ -38,6 +38,10 @@ abstract class DetectionBase implements Detection {
 
     /** @param numeric $VL */
     public function addVL($VL, ?string $message = null): void {
+        if (!$this->getUser()->getPlayer()->isOnline()) {
+            return;
+        }
+
         $this->VL += $VL;
         if ($message !== null) {
             $this->alert($message);
@@ -92,6 +96,10 @@ abstract class DetectionBase implements Detection {
 	final public function getConfiguration() : DetectionConfiguration { return $this->configuration; }
 
 	public function fail(string $message) : void {
+        if (!$this->getUser()->getPlayer()->isOnline()) {
+            return;
+        }
+
         foreach ($this->getUser()->getPlayer()->getServer()->getOnlinePlayers() as $onlinePlayer) {
             if ($onlinePlayer->hasPermission("lunar.alert.notify")) {
                 $onlinePlayer->sendMessage(" §c[FAIL]§7 [{$this->user->getPlayer()->getName()}]: $this->name ($this->VL/{$this->getConfiguration()->getMaxVL()})");
@@ -135,6 +143,10 @@ abstract class DetectionBase implements Detection {
         $code = $this->generateCode();
         $player = $this->getUser()->getPlayer();
         $type = $this->name;
+
+        if (!$player->isOnline()) {
+            return;
+        }
 
         $this->log($message, $code);
 
