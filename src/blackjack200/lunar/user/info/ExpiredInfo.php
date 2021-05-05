@@ -14,20 +14,20 @@ final class ExpiredInfo {
         $this->data->allocate($size);
     }
 
-    /** @phpstan-ignore-nextline */
+    /** @phpstan-ignore-next-line */
     public function set($k): void {
         $this->lazy($k);
         $this->data->put($k, microtime(true));
     }
 
-    /** @phpstan-ignore-nextline */
+    /** @phpstan-ignore-next-line */
     private function lazy($k): void {
         if (!$this->data->hasKey($k)) {
             $this->data->put($k, microtime(true));
         }
 	}
 
-    /** @phpstan-ignore-nextline */
+    /** @phpstan-ignore-next-line */
 	public function duration($k) : float {
 		$this->lazy($k);
 		return microtime(true) - $this->data->get($k);

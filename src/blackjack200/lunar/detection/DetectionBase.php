@@ -26,7 +26,7 @@ abstract class DetectionBase implements Detection {
 
 	/**
      * @param DetectionConfiguration $data
-     * @phpstan-ignore-nextline
+     * @phpstan-ignore-next-line
      */
 	public function __construct(User $user, string $name, string $fmt, ?string $webhookFmt, $data) {
 		$this->user = $user;

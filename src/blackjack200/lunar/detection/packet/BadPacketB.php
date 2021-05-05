@@ -14,10 +14,12 @@ class BadPacketB extends DetectionBase {
 	private int $type;
 
 	public function handleClient(DataPacket $packet) : void {
-        if (($packet::NETWORK_ID === MovePlayerPacket::NETWORK_ID and
-                $this->getMovementType() !== PlayerMovementType::LEGACY) or
-            ($packet::NETWORK_ID === PlayerAuthInputPacket::NETWORK_ID and
-                $this->getMovementType() === PlayerMovementType::LEGACY)) {
+        if ($packet::NETWORK_ID === MovePlayerPacket::NETWORK_ID and
+            /** @phpstan-ignore-next-line */
+            $this->getMovementType() !== PlayerMovementType::LEGACY or
+            $packet::NETWORK_ID === PlayerAuthInputPacket::NETWORK_ID and
+            /** @phpstan-ignore-next-line */
+            $this->getMovementType() === PlayerMovementType::LEGACY) {
             $this->error($packet);
         }
     }
