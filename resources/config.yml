@@ -136,7 +136,7 @@ FlyE:
 
 # Check for invalid horizontal acceleration. Like BHop, Speed
 MotionA:
-  Enable: true
+  Enable: false
   Punishment: KICK
   MaxVL: 30
 
@@ -144,7 +144,7 @@ MotionA:
 MotionB:
   Enable: true
   Punishment: KICK
-  MaxVL: 30
+  MaxVL: 80
 
 #  Check for swimming in air
 AirSwim:
