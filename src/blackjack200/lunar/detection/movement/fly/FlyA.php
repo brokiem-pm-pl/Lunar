@@ -21,6 +21,7 @@ class FlyA extends DetectionBase {
                 $info->inAirTick > 7 &&
                 !$info->onGround &&
                 !$action->isFlying &&
+                !$player->getAllowFlight() &&
                 $info->timeSinceTeleport() > 2 &&
                 $info->timeSinceMotion() > 1 &&
                 $user->timeSinceJoin() > 10 &&

@@ -15,6 +15,7 @@ class FlyB extends DetectionBase {
             $packet->action === PlayerActionPacket::ACTION_JUMP &&
             !$info->inVoid2 &&
             !$info->onGround &&
+            !$this->getUser()->getPlayer()->getAllowFlight() &&
             $info->timeSinceTeleport() > 1.5
 		) {
             $this->addVL(1, "off=$info->inAirTick");

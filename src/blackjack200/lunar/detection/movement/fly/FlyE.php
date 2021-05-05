@@ -30,6 +30,7 @@ class FlyE extends DetectionBase {
 				!$info->onGround &&
                 !$info->inVoid &&
                 $info->checkFly &&
+                !$player->getAllowFlight() &&
                 !$user->getActionInfo()->isFlying &&
                 $info->timeSinceTeleport() > 2 &&
                 $info->timeSinceMotion() > 0.25 &&

@@ -20,16 +20,19 @@ class SpeedC extends DetectionBase {
 
 	public function handleClient(DataPacket $packet) : void {
 		if ($packet instanceof MovePlayerPacket) {
-			$user = $this->getUser();
-			$info = $user->getMovementInfo();
-			$deltaXZ = hypot($info->moveDelta->x, $info->moveDelta->z);
-			$maxSpeed = $this->getSpeed();
+            $user = $this->getUser();
+            $player = $user->getPlayer();
+            $info = $user->getMovementInfo();
+            $deltaXZ = hypot($info->moveDelta->x, $info->moveDelta->z);
+            $maxSpeed = $this->getSpeed();
 
-			if ($deltaXZ > $maxSpeed &&
-				$info->checkFly &&
-				!$info->inVoid &&
-				!$user->getActionInfo()->isFlying &&
-				$info->timeSinceTeleport() >= 0.25 &&
+            if ($deltaXZ > $maxSpeed &&
+                $info->checkFly &&
+                !$info->inVoid &&
+                !$user->getActionInfo()->isFlying &&
+                !$player->getAllowFlight() &&
+                $player->isFlying() &&
+                $info->timeSinceTeleport() >= 0.25 &&
 				$info->timeSinceMotion() >= 0.75 &&
 				!$user->getPlayer()->isCreative() &&
 				$user->getExpiredInfo()->duration(Effect::SPEED) > 1 &&
