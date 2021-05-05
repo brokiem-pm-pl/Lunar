@@ -1,9 +1,0 @@
-.DS_Store
-.idea
-.vscode
-
-/vendor/
-
-composer.lock
-
-*.phar
