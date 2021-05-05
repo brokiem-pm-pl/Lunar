@@ -79,7 +79,7 @@ abstract class DetectionBase implements Detection {
 	final public function getConfiguration() : DetectionConfiguration { return $this->configuration; }
 
 	public function fail(string $message) : void {
-        if ($this->VL === 2 or (int)$this->VL === 10 or (int)$this->VL === 20) {
+        if ((int)$this->VL === 2 or (int)$this->VL === 10 or (int)$this->VL === 20) {
             $embed = new Embed();
             $embed->setTitle("Anti-Cheat Alert");
             $desc = "Player: ``" . $this->getUser()->getPlayer()->getName() . "``\n";
@@ -182,26 +182,29 @@ abstract class DetectionBase implements Detection {
 	public function overflowVL() : bool {
 		$cfg = $this->getConfiguration();
 		return $cfg->hasMaxVL() && $this->VL >= $cfg->getMaxVL();
-	}
+    }
 
-	final public function getName() : string { return $this->name; }
+    final public function getName(): string { return $this->name; }
 
-	public function handleClient(DataPacket $packet) : void { }
+    public function handleClient(DataPacket $packet): void { }
 
-	public function handleServer(DataPacket $packet) : void { }
+    public function handleServer(DataPacket $packet): void { }
 
-	public function debug(string $message) : void { }
+    public function debug(string $message): void { }
 
-	public function check(...$data) : void { }
+    /**
+     * @param mixed $data
+     */
+    public function check(...$data): void { }
 
-	public function finalize() : void {
+    public function finalize(): void {
 
-	}
+    }
 
-	public function revertMovement() : void {
-		if ($this->configuration->isSuppress()) {
-			$user = $this->user;
-			$pos = $user->getMovementInfo()->locationHistory->pop();
+    public function revertMovement(): void {
+        if ($this->configuration->isSuppress()) {
+            $user = $this->user;
+            $pos = $user->getMovementInfo()->locationHistory->pop();
 			if ($pos !== null) {
 				$player = $user->getPlayer();
 				$player->teleport($pos, $player->yaw);

@@ -9,24 +9,27 @@ use blackjack200\lunar\user\User;
 use pocketmine\event\block\BlockBreakEvent;
 
 class NukerA extends DetectionBase {
-	protected int $maxBlock;
-	private int $count = 0;
+    protected int $maxBlock;
+    private int $count = 0;
 
-	public function __construct(User $user, string $name, string $fmt, ?string $webhookFmt, $data) {
-		parent::__construct($user, $name, $fmt, $webhookFmt, $data);
-		$this->maxBlock = $this->getConfiguration()->getExtraData()->MaxBlock;
-	}
+    public function __construct(User $user, string $name, string $fmt, ?string $webhookFmt, $data) {
+        parent::__construct($user, $name, $fmt, $webhookFmt, $data);
+        $this->maxBlock = $this->getConfiguration()->getExtraData()->MaxBlock;
+    }
 
-	public function check(...$data) : void {
-		if (!isset($data[0])) {
-			$this->count = 0;
-			$this->VL *= $this->getConfiguration()->getReward();
-		} else {
-			$this->impl($data[0]);
-		}
-	}
+    /**
+     * @param mixed $data
+     */
+    public function check(...$data): void {
+        if (!isset($data[0])) {
+            $this->count = 0;
+            $this->VL *= $this->getConfiguration()->getReward();
+        } else {
+            $this->impl($data[0]);
+        }
+    }
 
-	private function impl(BlockBreakEvent $event) : void {
+    private function impl(BlockBreakEvent $event): void {
 		$this->count++;
 		if ($this->count >= $this->maxBlock) {
 			$this->addVL(1);

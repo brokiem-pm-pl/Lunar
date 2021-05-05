@@ -8,15 +8,18 @@ use blackjack200\lunar\detection\DetectionBase;
 use pocketmine\network\mcpe\protocol\types\DeviceOS;
 
 class ClientDataFaker extends DetectionBase {
-	public function check(...$data) : void {
-		$loginData = $this->getUser()->loginData;
-		$clientData = $loginData->getClientData();
-		$deviceOS = $clientData->DeviceOS;
-		$deviceModel = $clientData->DeviceModel;
+    /**
+     * @param mixed $data
+     */
+    public function check(...$data): void {
+        $loginData = $this->getUser()->loginData;
+        $clientData = $loginData->getClientData();
+        $deviceOS = $clientData->DeviceOS;
+        $deviceModel = $clientData->DeviceModel;
 
-		if ($deviceOS === DeviceOS::ANDROID && trim($deviceModel) === '') {
-			$deviceOS = 20;
-		}
+        if ($deviceOS === DeviceOS::ANDROID && trim($deviceModel) === '') {
+            $deviceOS = 20;
+        }
 
 		$pass = !in_array(
 				$deviceOS,

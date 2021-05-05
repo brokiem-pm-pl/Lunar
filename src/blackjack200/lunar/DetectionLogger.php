@@ -10,26 +10,26 @@ use RuntimeException;
 use Threaded;
 
 class DetectionLogger extends Thread {
-	private string $logFile;
-	private Threaded $buffer;
-	private bool $running;
+    private string $logFile;
+    private Threaded $buffer;
+    private bool $running;
 
-	public function __construct(string $file) {
-		$this->logFile = $file;
-		$this->buffer = new Threaded();
-		touch($this->logFile);
-	}
+    public function __construct(string $file) {
+        $this->logFile = $file;
+        $this->buffer = new Threaded();
+        touch($this->logFile);
+    }
 
-	public function start(int $options = PTHREADS_INHERIT_ALL) : void {
-		$this->running = true;
-		parent::start($options);
-	}
+    public function start(int $options = PTHREADS_INHERIT_ALL): bool {
+        $this->running = true;
+        return parent::start($options);
+    }
 
-	public function shutdown() : void {
-		$this->synchronized(function () {
-			$this->running = false;
-		});
-	}
+    public function shutdown(): void {
+        $this->synchronized(function() {
+            $this->running = false;
+        });
+    }
 
 	public function write(string $buffer) : void {
 		$this->buffer[] = TextFormat::clean($buffer);

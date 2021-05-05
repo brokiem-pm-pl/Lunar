@@ -39,23 +39,26 @@ class PlayerActionProcessor extends Processor {
 					$info->isSwimming = true;
 					break;
 				case PlayerActionPacket::ACTION_STOP_SWIMMING:
-					$info->isSwimming = false;
-					$info2->set('swim');
-					break;
-				case PlayerActionPacket::ACTION_JUMP:
-					$user->getMovementInfo()->lastJump = microtime(true);
-					break;
-			}
-		}
-	}
+                    $info->isSwimming = false;
+                    $info2->set('swim');
+                    break;
+                case PlayerActionPacket::ACTION_JUMP:
+                    $user->getMovementInfo()->lastJump = microtime(true);
+                    break;
+            }
+        }
+    }
 
-	public function check(...$data) : void {
-		$user = $this->getUser();
-		$player = $user->getPlayer();
-		$flying = $player->isFlying();
-		$user->getActionInfo()->isFlying = $flying;
-		if (!$flying && $user->getActionInfo()->isFlying) {
-			$user->getExpiredInfo()->set('fly');
-		}
-	}
+    /**
+     * @param mixed $data
+     */
+    public function check(...$data): void {
+        $user = $this->getUser();
+        $player = $user->getPlayer();
+        $flying = $player->isFlying();
+        $user->getActionInfo()->isFlying = $flying;
+        if (!$flying && $user->getActionInfo()->isFlying) {
+            $user->getExpiredInfo()->set('fly');
+        }
+    }
 }

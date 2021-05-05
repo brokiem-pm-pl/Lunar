@@ -109,26 +109,29 @@ class MovementProcessor extends Processor {
 		foreach ([$rawPos->x, $rawPos->y, $rawPos->z, $packet->yaw, $packet->headYaw, $packet->pitch] as $float) {
 			if (is_infinite($float) || is_nan($float)) {
 				return false;
-			}
-		}
-		$packet->yaw = fmod($packet->yaw, 360);
-		$packet->pitch = fmod($packet->pitch, 360);
-		if ($packet->yaw < 0) {
-			$packet->yaw += 360;
-		}
-		return true;
-	}
+            }
+        }
+        $packet->yaw = fmod($packet->yaw, 360);
+        $packet->pitch = fmod($packet->pitch, 360);
+        if ($packet->yaw < 0) {
+            $packet->yaw += 360;
+        }
+        return true;
+    }
 
-	public function check(...$data) : void {
-		$user = $this->getUser();
-		$player = $user->getPlayer();
-		if ($player->spawned) {
-			$info = $user->getMovementInfo();
-			if (!$info->checkFly) {
-				$user->getExpiredInfo()->set('checkFly');
-			}
-			if (!$info->onGround) {
-				$info->inAirTick++;
+    /**
+     * @param mixed $data
+     */
+    public function check(...$data): void {
+        $user = $this->getUser();
+        $player = $user->getPlayer();
+        if ($player->spawned) {
+            $info = $user->getMovementInfo();
+            if (!$info->checkFly) {
+                $user->getExpiredInfo()->set('checkFly');
+            }
+            if (!$info->onGround) {
+                $info->inAirTick++;
 				$info->onGroundTick = 0;
 			} else {
 				$info->inAirTick = 0;

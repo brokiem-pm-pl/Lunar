@@ -19,26 +19,29 @@ class KillAuraA extends DetectionBase {
 	public function __construct(User $user, string $name, string $fmt, ?string $webhookFmt, $data) {
 		parent::__construct($user, $name, $fmt, $webhookFmt, $data);
 		$this->radius = (float) $this->getConfiguration()->getExtraData()->Radius;
-		$this->min = (int) $this->getConfiguration()->getExtraData()->Random->Y->Min;
-		$this->max = (int) $this->getConfiguration()->getExtraData()->Random->Y->Max;
+        $this->min = (int)$this->getConfiguration()->getExtraData()->Random->Y->Min;
+        $this->max = (int)$this->getConfiguration()->getExtraData()->Random->Y->Max;
 
-		$player = $this->getUser()->getPlayer();
-		$tag = Entity::createBaseNBT($player);
-		$tag->setTag($player->namedtag->getTag('Skin'));
-		$this->slapper = new Slapper($player->getLevelNonNull(), $tag, $this);
-		$this->slapper->spawnTo($player);
-	}
+        $player = $this->getUser()->getPlayer();
+        $tag = Entity::createBaseNBT($player);
+        $tag->setTag($player->namedtag->getTag('Skin'));
+        $this->slapper = new Slapper($player->getLevelNonNull(), $tag, $this);
+        $this->slapper->spawnTo($player);
+    }
 
-	public function check(...$data) : void {
-		$player = $this->getUser()->getPlayer();
-		$location = clone $player->getLocation();
-		$count = random_int($this->min, $this->max);
-		$this->slapper->teleport(
-			$location->add(
-				$this->radius * cos($count) - $this->radius * sin($count),
-				1,
-				$this->radius * sin($count) + $this->radius * cos($count)
-			)
+    /**
+     * @param mixed $data
+     */
+    public function check(...$data): void {
+        $player = $this->getUser()->getPlayer();
+        $location = clone $player->getLocation();
+        $count = random_int($this->min, $this->max);
+        $this->slapper->teleport(
+            $location->add(
+                $this->radius * cos($count) - $this->radius * sin($count),
+                1,
+                $this->radius * sin($count) + $this->radius * cos($count)
+            )
 		);
 		if (random_int(0, 5) === 0) {
 			$pk = new PlayerActionPacket();

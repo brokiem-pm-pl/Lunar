@@ -12,22 +12,25 @@ use pocketmine\network\mcpe\protocol\DataPacket;
 use pocketmine\network\mcpe\protocol\PlayerActionPacket;
 
 class FastBreakA extends DetectionBase {
-	private float $breakTime;
+    private float $breakTime;
 
-	public function __construct(User $user, string $name, string $fmt, ?string $webhookFmt, $data) {
-		parent::__construct($user, $name, $fmt, $webhookFmt, $data);
-		$this->breakTime = floor(microtime(true) * 20);
-	}
+    public function __construct(User $user, string $name, string $fmt, ?string $webhookFmt, $data) {
+        parent::__construct($user, $name, $fmt, $webhookFmt, $data);
+        $this->breakTime = floor(microtime(true) * 20);
+    }
 
-	public function check(...$data) : void {
-		$this->impl($data[0]);
-	}
+    /**
+     * @param mixed $data
+     */
+    public function check(...$data): void {
+        $this->impl($data[0]);
+    }
 
-	private function impl(BlockBreakEvent $event) : void {
-		if (!$event->getInstaBreak()) {
-			$player = $event->getPlayer();
-			$target = $event->getBlock();
-			$item = $event->getItem();
+    private function impl(BlockBreakEvent $event): void {
+        if (!$event->getInstaBreak()) {
+            $player = $event->getPlayer();
+            $target = $event->getBlock();
+            $item = $event->getItem();
 
 			$expectedTime = ceil($target->getBreakTime($item) * 20);
 

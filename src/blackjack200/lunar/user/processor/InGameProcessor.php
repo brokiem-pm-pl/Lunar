@@ -15,23 +15,26 @@ class InGameProcessor extends Processor {
 		if (($packet instanceof InventoryTransactionPacket) && $packet->trData instanceof UseItemOnEntityTransactionData && $packet->trData->getActionType() === UseItemOnEntityTransactionData::ACTION_ATTACK) {
 			$this->addClick();
 		}
-		if ($packet instanceof LevelSoundEventPacket && $packet->sound === LevelSoundEventPacket::SOUND_ATTACK_NODAMAGE) {
-			$this->addClick();
-		}
-	}
+        if ($packet instanceof LevelSoundEventPacket && $packet->sound === LevelSoundEventPacket::SOUND_ATTACK_NODAMAGE) {
+            $this->addClick();
+        }
+    }
 
-	public function addClick() : void {
-		$CPS = &$this->getUser()->CPS;
-		$CPS++;
-	}
+    public function addClick(): void {
+        $CPS = &$this->getUser()->CPS;
+        $CPS++;
+    }
 
-	public function check(...$data) : void {
-		$usr = $this->getUser();
-		foreach ($usr->getPlayer()->getEffects() as $effect) {
-			if ($effect->getDuration() === 1) {
-				$usr->getExpiredInfo()->set($effect->getId());
-			}
-		}
-		$usr->CPS = 0;
-	}
+    /**
+     * @param mixed $data
+     */
+    public function check(...$data): void {
+        $usr = $this->getUser();
+        foreach ($usr->getPlayer()->getEffects() as $effect) {
+            if ($effect->getDuration() === 1) {
+                $usr->getExpiredInfo()->set($effect->getId());
+            }
+        }
+        $usr->CPS = 0;
+    }
 }

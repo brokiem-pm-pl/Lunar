@@ -11,16 +11,19 @@ use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\Player;
 
 class ReachA extends DetectionBase {
-	public function check(...$data) : void {
-		$this->impl(...$data);
-	}
+    /**
+     * @param mixed $data
+     */
+    public function check(...$data): void {
+        $this->impl(...$data);
+    }
 
-	public function impl(EntityDamageByEntityEvent $event) : void {
-		if ($event instanceof EntityDamageByChildEntityEvent) {
-			return;
-		}
-		/** @var Player $damager */
-		$damager = $event->getDamager();
+    public function impl(EntityDamageByEntityEvent $event): void {
+        if ($event instanceof EntityDamageByChildEntityEvent) {
+            return;
+        }
+        /** @var Player $damager */
+        $damager = $event->getDamager();
 		/** @var Player $damaged */
 		$damaged = $event->getEntity();
 		$user = $this->getUser();

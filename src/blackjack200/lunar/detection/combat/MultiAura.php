@@ -10,26 +10,29 @@ use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\Player;
 
 class MultiAura extends DetectionBase {
-	protected float $time;
-	protected array $targets = [];
-	protected $max;
+    protected float $time;
+    protected array $targets = [];
+    protected $max;
 
-	public function __construct(User $user, string $name, string $fmt, ?string $webhookFmt, $data) {
-		parent::__construct($user, $name, $fmt, $webhookFmt, $data);
-		$this->time = microtime(true);
-		$this->max = $this->getConfiguration()->getExtraData()->MaxEntityHit;
-	}
+    public function __construct(User $user, string $name, string $fmt, ?string $webhookFmt, $data) {
+        parent::__construct($user, $name, $fmt, $webhookFmt, $data);
+        $this->time = microtime(true);
+        $this->max = $this->getConfiguration()->getExtraData()->MaxEntityHit;
+    }
 
-	public function check(...$data) : void {
-		/** @var EntityDamageByEntityEvent $event */
-		[$event] = $data;
-		/** @var Player $damager */
-		$damager = $event->getDamager();
-		/** @var Player $damager */
-		$victim = $event->getEntity();
-		$distance = $damager->distance($victim);
-		if ($distance <= 1.5) {
-			return;
+    /**
+     * @param mixed $data
+     */
+    public function check(...$data): void {
+        /** @var EntityDamageByEntityEvent $event */
+        [$event] = $data;
+        /** @var Player $damager */
+        $damager = $event->getDamager();
+        /** @var Player $damager */
+        $victim = $event->getEntity();
+        $distance = $damager->distance($victim);
+        if ($distance <= 1.5) {
+            return;
 		}
 
 		if (!in_array(spl_object_hash($victim), $this->targets, true)) {
