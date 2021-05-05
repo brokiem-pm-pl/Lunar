@@ -11,6 +11,7 @@ use pocketmine\level\Level;
 use pocketmine\nbt\tag\CompoundTag;
 
 class Slapper extends Human {
+    /** @var int|float|mixed */
 	protected $attackCooldown;
 	private KillAuraA $killAura;
 	private float $last;

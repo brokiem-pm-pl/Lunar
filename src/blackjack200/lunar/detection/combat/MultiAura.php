@@ -12,6 +12,7 @@ use pocketmine\Player;
 class MultiAura extends DetectionBase {
     protected float $time;
     protected array $targets = [];
+    /** @var int|float|mixed */
     protected $max;
 
     public function __construct(User $user, string $name, string $fmt, ?string $webhookFmt, $data) {

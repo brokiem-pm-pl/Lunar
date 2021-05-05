@@ -23,9 +23,6 @@ class Objects {
 		return $obj;
 	}
 
-	/**
-	 * @param array<string, string> $values
-	 */
 	public static function replace(string $haystack, string $fmt, array $values) : string {
 		return str_replace(
 			array_map(

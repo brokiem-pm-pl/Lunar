@@ -8,6 +8,7 @@ use blackjack200\lunar\detection\DetectionBase;
 use blackjack200\lunar\user\User;
 
 class AutoClicker extends DetectionBase {
+    /** @var int|float|mixed */
     protected $maxCPS;
 
     public function __construct(User $user, string $name, string $fmt, ?string $webhookFmt, $data) {

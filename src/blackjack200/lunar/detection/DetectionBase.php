@@ -25,8 +25,9 @@ abstract class DetectionBase implements Detection {
 	private string $fmt;
 
 	/**
-	 * @param DetectionConfiguration $data
-	 */
+     * @param DetectionConfiguration $data
+     * @phpstan-ignore-nextline
+     */
 	public function __construct(User $user, string $name, string $fmt, ?string $webhookFmt, $data) {
 		$this->user = $user;
 		$this->name = $name;
@@ -54,24 +55,21 @@ abstract class DetectionBase implements Detection {
     }
 
 	final protected function format(string $fmt, string $message, bool $prefix = true) : string {
-		$cfg = $this->getConfiguration();
-		return sprintf(
-			'%s%s',
-			$prefix ? Lunar::getInstance()->getPrefix() . ' ' : '',
-			Objects::replace($fmt, '[%s]',
-				[
-					'MSG' => $message,
-					'DETECTION_NAME' => $this->name,
-					'PLAYER_NAME' => $this->user->getPlayer()->getName(),
-					'MAX_VL' => $cfg->getMaxVL(),
-					'VL' => $this->VL,
-					'PRE_VL' => $this->preVL,
-					'PUNISHMENT' => $cfg->getPunishment(),
-					'PUNISHMENT_STRING' => Punishment::toString($cfg->getPunishment())
-				]
-			)
-		);
-	}
+        $cfg = $this->getConfiguration();
+        return sprintf('%s%s', $prefix ? Lunar::getInstance()->getPrefix() . ' ' : '',
+            Objects::replace($fmt, '[%s]', [
+                    'MSG' => $message,
+                    'DETECTION_NAME' => $this->name,
+                    'PLAYER_NAME' => $this->user->getPlayer()->getName(),
+                    'MAX_VL' => $cfg->getMaxVL(),
+                    'VL' => $this->VL,
+                    'PRE_VL' => $this->preVL,
+                    'PUNISHMENT' => $cfg->getPunishment(),
+                    'PUNISHMENT_STRING' => Punishment::toString($cfg->getPunishment())
+                ]
+            )
+        );
+    }
 
 	final public function getConfiguration() : DetectionConfiguration { return $this->configuration; }
 
