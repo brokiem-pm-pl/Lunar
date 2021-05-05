@@ -40,10 +40,10 @@ FastBreakA:
 AutoClicker:
   Enable: true
   Punishment: KICK
-  MaxVL: 30
+  MaxVL: 20
   # Max CPS
-  MaxCPS: 25
-  Reward: 0.988
+  MaxCPS: 18
+  Reward: 1
 
 
 # Combat
@@ -162,13 +162,13 @@ AntiImmobile:
 
 #  Check for invalid self hit action
 BadPacketA:
-  Enable: true
+  Enable: false
   Punishment: KICK
   MaxVL: 30
 
 #  Check for invalid movement packet
 BadPacketB:
-  Enable: true
+  Enable: false
   Punishment: KICK
   MaxVL: 30
 
