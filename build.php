@@ -9,11 +9,6 @@ function pause() : void {
 	fflush(STDIN);
 }
 
-function prepare_submodule() {
-	shell_exec('git submodule init');
-	shell_exec('git submodule update');
-}
-
 function new_logger() : Generator {
 	while (true) {
 		$r = yield;
@@ -25,15 +20,13 @@ $logger = new_logger();
 $logger->send('Lunar anticheat build script');
 
 $logger->send('initialize submodule');
-prepare_submodule();
 
 $hash = substr(git_hash(), 0, 16);
 $logger->send("Hash: $hash");
 
-$phar_name = "Lunar_$hash.phar";
+$phar_name = "Lunar.phar";
 $logger->send("File: $phar_name");
 
-$logger->send("Clean: $phar_name");
 @unlink($phar_name);
 
 $logger->send('Press [Enter] to build');

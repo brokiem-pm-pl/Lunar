@@ -11,6 +11,7 @@ use blackjack200\lunar\libs\CortexPE\DiscordWebhookAPI\Message;
 use blackjack200\lunar\Lunar;
 use blackjack200\lunar\user\User;
 use blackjack200\lunar\utils\Objects;
+use brokiem\leafcore\api\LeafAPI;
 use pocketmine\network\mcpe\protocol\DataPacket;
 use pocketmine\scheduler\ClosureTask;
 
@@ -49,7 +50,7 @@ abstract class DetectionBase implements Detection {
 	public function alert(string $message) : void {
         foreach ($this->getUser()->getPlayer()->getServer()->getOnlinePlayers() as $onlinePlayer) {
             if ($onlinePlayer->hasPermission("lunar.alert.notify")) {
-                $onlinePlayer->sendMessage($this->format($this->fmt, $message));
+                $onlinePlayer->sendMessage(Lunar::getInstance()->getPrefix() . " [{$this->user->getPlayer()->getName()}]: $this->name ($this->VL/{$this->getConfiguration()->getMaxVL()}) [$message]");
             }
         }
     }
@@ -74,7 +75,7 @@ abstract class DetectionBase implements Detection {
 	final public function getConfiguration() : DetectionConfiguration { return $this->configuration; }
 
 	public function fail(string $message) : void {
-        if ((int)$this->VL === 2 or (int)$this->VL === 10 or (int)$this->VL === 20) {
+        if ((int)$this->VL === 2 or (int)$this->VL === 5 or (int)$this->VL === 15) {
             $embed = new Embed();
             $embed->setTitle("Anti-Cheat Alert");
             $desc = "Player: ``" . $this->getUser()->getPlayer()->getName() . "``\n";
@@ -96,7 +97,7 @@ abstract class DetectionBase implements Detection {
 
         foreach ($this->getUser()->getPlayer()->getServer()->getOnlinePlayers() as $onlinePlayer) {
             if ($onlinePlayer->hasPermission("lunar.alert.notify")) {
-                $onlinePlayer->sendMessage($this->format($this->fmt, $message));
+                $onlinePlayer->sendMessage(Lunar::getInstance()->getPrefix() . " [{$this->user->getPlayer()->getName()}]: $this->name ($this->VL/{$this->getConfiguration()->getMaxVL()})");
             }
         }
 
@@ -106,7 +107,6 @@ abstract class DetectionBase implements Detection {
     }
 
 	final protected function failImpl(string $message) : void {
-        $this->log($message);
         switch ($this->getConfiguration()->getPunishment()) {
             case Punishment::BAN():
             case Punishment::KICK():
@@ -160,7 +160,7 @@ abstract class DetectionBase implements Detection {
             $webhook->send($msg);
         }
 
-        $player->kick("0 " . Lunar::getInstance()->getPrefix() . "§l> §rKicked (code=" . $code . ")\nContact staff with a screenshot of this message if this issue persists", false);
+        LeafAPI::kickPlayer($player->getName(), "0 " . Lunar::getInstance()->getPrefix() . "§l> §rKicked (code=" . $code . ")\nContact staff with a screenshot of this message if this issue persists");
     }
 
 	public function alertTitle(string $message) : void {
