@@ -14,7 +14,7 @@ use Throwable;
 
 class Lunar extends PluginBase {
 
-    private static $instance;
+    private static Lunar $instance;
 
     private string $prefix;
 
@@ -34,26 +34,28 @@ class Lunar extends PluginBase {
 
     public function getFormat(): string { return $this->format; }
 
-	public function getWebhookFormat() : ?string { return $this->webhookFormat; }
+    public function getWebhookFormat(): ?string { return $this->webhookFormat; }
 
-	public function onEnable() : void {
-		self::$instance = $this;
+    public function onLoad(): void {
+        self::$instance = $this;
+    }
 
-		$config = $this->getConfig();
-		$this->saveResource('config.yml', $config->get('Replace'));
-		$this->reloadConfig();
+    public function onEnable(): void {
+        $config = $this->getConfig();
+        $this->saveResource('config.yml', $config->get('Replace'));
+        $this->reloadConfig();
 
         $this->prefix = $config->get('Prefix', true);
-		$this->format = $config->get('Format', true);
+        $this->format = $config->get('Format', true);
 
         Entity::registerEntity(Slapper::class, true, ['lunar_slapper']);
 
         try {
-			DetectionRegistry::initConfig();
-		} catch (Throwable $e) {
-			$this->getLogger()->logException($e);
-			$this->getServer()->getPluginManager()->disablePlugin($this);
-			return;
+            DetectionRegistry::initConfig();
+        } catch (Throwable $e) {
+            $this->getLogger()->logException($e);
+            $this->getServer()->getPluginManager()->disablePlugin($this);
+            return;
         }
 
         $this->getScheduler()->scheduleRepeatingTask(new ProcessorTickTrigger(), 1);
