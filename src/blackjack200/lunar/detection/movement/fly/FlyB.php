@@ -14,7 +14,8 @@ class FlyB extends DetectionBase {
 		if ($packet instanceof PlayerActionPacket &&
             $packet->action === PlayerActionPacket::ACTION_JUMP &&
             !$info->onGround &&
-            $info->timeSinceTeleport() > 1.5
+            $info->timeSinceTeleport() > 1.5 &&
+            $this->getUser()->getPlayer()->getY() > 1
 		) {
             $this->addVL(1, "off=$info->inAirTick");
             $this->revertMovement();
