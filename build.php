@@ -19,8 +19,6 @@ function new_logger() : Generator {
 $logger = new_logger();
 $logger->send('Lunar anticheat build script');
 
-$logger->send('initialize submodule');
-
 $hash = substr(git_hash(), 0, 16);
 $logger->send("Hash: $hash");
 
@@ -42,5 +40,5 @@ $phar->buildFromDirectory('./', <<<REGEXP
 REGEXP
 );
 $phar->stopBuffering();
-$logger->send('Build Success');
+$logger->send('Build Success!');
 $logger->send(sprintf('Time Used: %.6f', microtime(true) - $before));

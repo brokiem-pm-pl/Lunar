@@ -105,7 +105,7 @@ SpeedC:
   Enable: true
   Punishment: KICK
   MaxVL: 30
-  Suppress: false
+  Suppress: true
   Reward: 0.1
 
 
@@ -122,7 +122,7 @@ FlyB:
   Enable: true
   Punishment: KICK
   MaxVL: 30
-  Suppress: false
+  Suppress: true
   Reward: 0.85
 
 # Checks for small vertical movement.
@@ -157,7 +157,7 @@ AirSwim:
 AntiImmobile:
   Enable: true
   Punishment: KICK
-  MaxVL: 30
+  MaxVL: 50
   Suppress: false
 
 # Network
