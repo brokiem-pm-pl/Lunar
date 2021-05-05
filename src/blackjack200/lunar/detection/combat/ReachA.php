@@ -50,8 +50,8 @@ class ReachA extends DetectionBase {
 			$this->addVL(1);
 			$this->preVL = 2;
 			if ($this->getConfiguration()->isSuppress()) {
-				$event->setCancelled(true);
-			}
+                $event->setCancelled();
+            }
 
 			if ($this->overflowVL()) {
 				$this->fail("max=$maxDist dist=$dist");

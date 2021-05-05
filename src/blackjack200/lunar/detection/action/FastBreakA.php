@@ -48,13 +48,13 @@ class FastBreakA extends DetectionBase {
 
 			if ($actualTime < $expectedTime) {
 				if ($this->getConfiguration()->isSuppress()) {
-					$event->setCancelled(true);
-				}
+                    $event->setCancelled();
+                }
 
 				$this->addVL(1);
 				if ($this->overflowVL()) {
-					$this->fail('Try to break ' . $target->getName() . ' with tool= ' . $item->getVanillaName() . 'diff=' . number_format($actualTime - $expectedTime, 5));
-				}
+                    $this->fail('Try to break ' . $target->getName() . ' with tool= ' . $item->getVanillaName() . ' diff=' . number_format($actualTime - $expectedTime, 5));
+                }
 			}
 		}
 	}

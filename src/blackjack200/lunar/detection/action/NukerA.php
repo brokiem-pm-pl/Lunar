@@ -34,11 +34,11 @@ class NukerA extends DetectionBase {
 		if ($this->count >= $this->maxBlock) {
 			$this->addVL(1);
 			if ($this->getConfiguration()->isSuppress()) {
-				$event->setCancelled(true);
-			}
+                $event->setCancelled();
+            }
 			if ($this->overflowVL()) {
-				$this->fail("COUNT={$this->count}");
-			}
+                $this->fail("COUNT=$this->count");
+            }
 		}
 	}
 }
