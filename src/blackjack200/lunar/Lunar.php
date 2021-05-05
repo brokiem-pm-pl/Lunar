@@ -38,11 +38,7 @@ class Lunar extends PluginBase {
 
 	public function onEnable() : void {
 		self::$instance = $this;
-		if (version_compare('7.4.0', PHP_VERSION) > 0) {
-			$this->getLogger()->error('Required PHP Version >= 7.4.0');
-			$this->getServer()->getPluginManager()->disablePlugin($this);
-			return;
-		}
+
 		$this->getServer()->getPluginManager()->registerEvents(new DefaultListener(), $this);
 		$config = $this->getConfig();
 		$this->saveResource('config.yml', $config->get('Replace'));

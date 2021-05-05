@@ -6,14 +6,12 @@ Prefix: "§7[§fLunar§7]"
 Format: "[DETECTION_NAME]: [MSG]"
 # Replace Config file by default
 Replace: true
-# In-Game CPS TAG
-CPSTag: true
 # Punishment(BAN, KICK, ALERT, IGNORE)
 
 # Check for wrong edition provided and DeviceModel
 ClientDataFaker:
-  Enable: true
-  Punishment: BAN
+  Enable: false
+  Punishment: KICK
   DeviceOS:
     - 1
     - 2
@@ -27,22 +25,22 @@ ClientDataFaker:
 # break too many block in 20ms
 NukerA:
   Enable: true
-  Punishment: BAN
-  MaxVL: 5
+  Punishment: KICK
+  MaxVL: 20
   # Max Block Breaks in 20ms
   MaxBlock: 3
 
 # Break block faster than prediction
 FastBreakA:
   Enable: true
-  Punishment: ALERT
-  MaxVL: 5
+  Punishment: KICK
+  MaxVL: 40
 
 # Basic high CPS with a certain limit
 AutoClicker:
   Enable: true
-  Punishment: BAN
-  MaxVL: 5
+  Punishment: KICK
+  MaxVL: 30
   # Max CPS
   MaxCPS: 25
   Reward: 0.988
@@ -53,7 +51,7 @@ AutoClicker:
 # Check for slapper hit
 KillAuraA:
   Enable: false
-  MaxVL: 5
+  MaxVL: 30
   Punishment: KICK
   AttackCooldown: 3
   Radius: 3
@@ -66,27 +64,27 @@ KillAuraA:
 KillAuraB:
   Enable: true
   Punishment: KICK
-  MaxVL: 5
+  MaxVL: 30
   SwingDuration: 0.3
 
 # Check for attack multiple entity with impossible count
 MultiAura:
   Enable: true
-  Punishment: BAN
-  MaxVL: 5
+  Punishment: KICK
+  MaxVL: 30
   MaxEntityHit: 4
 
 # Basic attack distance check
 ReachA:
   Enable: false
-  Punishment: ALERT
-  MaxVL: 5
+  Punishment: KICK
+  MaxVL: 30
 
 # Check for vertical velocity
 VelocityB:
   Enable: true
-  Punishment: ALERT
-  MaxVL: 5
+  Punishment: KICK
+  MaxVL: 30
 
 
 # Movement
@@ -95,7 +93,7 @@ VelocityB:
 SpeedA:
   Enable: false
   Punishment: KICK
-  MaxVL: 5
+  MaxVL: 30
   Suppress: false
   MaxDiff: 0.000000000001
   Reward: 0.888
@@ -104,7 +102,7 @@ SpeedA:
 SpeedC:
   Enable: true
   Punishment: KICK
-  MaxVL: 5
+  MaxVL: 30
   Suppress: false
   Reward: 0.1
 
@@ -113,7 +111,7 @@ SpeedC:
 FlyA:
   Enable: true
   Punishment: KICK
-  MaxVL: 5
+  MaxVL: 30
   Suppress: false
   Reward: 0.888
 
@@ -121,7 +119,7 @@ FlyA:
 FlyB:
   Enable: true
   Punishment: KICK
-  MaxVL: 5
+  MaxVL: 30
   Suppress: false
   Reward: 0.85
 
@@ -129,7 +127,7 @@ FlyB:
 FlyE:
   Enable: true
   Punishment: KICK
-  MaxVL: 5
+  MaxVL: 30
   Suppress: false
   MaxDiff: 0.01
   Reward: 0.88
@@ -138,26 +136,26 @@ FlyE:
 MotionA:
   Enable: true
   Punishment: KICK
-  MaxVL: 5
+  MaxVL: 30
 
 #  Check for invalid vertical acceleration. Like HighJump
 MotionB:
   Enable: true
   Punishment: KICK
-  MaxVL: 5
+  MaxVL: 30
 
 #  Check for swimming in air
 AirSwim:
-  Enable: true
+  Enable: false
   Punishment: KICK
-  MaxVL: 5
+  MaxVL: 30
   Suppress: false
 
 #  Check for movement when the player is immobile
 AntiImmobile:
   Enable: true
   Punishment: KICK
-  MaxVL: 5
+  MaxVL: 30
   Suppress: false
 
 # Network
@@ -165,17 +163,17 @@ AntiImmobile:
 #  Check for invalid self hit action
 BadPacketA:
   Enable: true
-  Punishment: BAN
-  MaxVL: 5
+  Punishment: KICK
+  MaxVL: 30
 
 #  Check for invalid movement packet
 BadPacketB:
   Enable: true
-  Punishment: BAN
-  MaxVL: 5
+  Punishment: KICK
+  MaxVL: 30
 
 #  Check for chat when move
 BadPacketC:
   Enable: false
   Punishment: KICK
-  MaxVL: 5
+  MaxVL: 30
