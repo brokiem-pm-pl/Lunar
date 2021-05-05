@@ -82,7 +82,7 @@ ReachA:
 
 # Check for vertical velocity
 VelocityB:
-  Enable: true
+  Enable: false
   Punishment: KICK
   MaxVL: 30
 
