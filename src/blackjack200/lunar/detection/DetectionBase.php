@@ -38,7 +38,7 @@ abstract class DetectionBase implements Detection {
 
     /** @param numeric $VL */
     public function addVL($VL, ?string $message = null): void {
-        if ($this->getUser()->isKicked or (int)$this->VL >= $this->getConfiguration()->getMaxVL()) {
+        if ($this->getUser()->isKicked or (int)$this->VL > $this->getConfiguration()->getMaxVL()) {
             return;
         }
 
@@ -96,7 +96,7 @@ abstract class DetectionBase implements Detection {
 	final public function getConfiguration() : DetectionConfiguration { return $this->configuration; }
 
 	public function fail(string $message) : void {
-        if ($this->getUser()->isKicked or (int)$this->VL >= $this->getConfiguration()->getMaxVL()) {
+        if ($this->getUser()->isKicked or (int)$this->VL > $this->getConfiguration()->getMaxVL()) {
             return;
         }
 
@@ -144,7 +144,7 @@ abstract class DetectionBase implements Detection {
         $player = $this->getUser()->getPlayer();
         $type = $this->name;
 
-        if ($this->getUser()->isKicked or (int)$this->VL >= $this->getConfiguration()->getMaxVL()) {
+        if ($this->getUser()->isKicked) {
             return;
         }
 
