@@ -32,13 +32,13 @@ class NukerA extends DetectionBase {
     private function impl(BlockBreakEvent $event): void {
 		$this->count++;
 		if ($this->count >= $this->maxBlock) {
-			$this->addVL(1);
-			if ($this->getConfiguration()->isSuppress()) {
+            $this->addVL(1, "COUNT=$this->count");
+            if ($this->getConfiguration()->isSuppress()) {
                 $event->setCancelled();
             }
-			if ($this->overflowVL()) {
+            if ($this->overflowVL()) {
                 $this->fail("COUNT=$this->count");
             }
-		}
+        }
 	}
 }

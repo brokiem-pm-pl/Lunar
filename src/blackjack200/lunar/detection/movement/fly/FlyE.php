@@ -43,12 +43,12 @@ class FlyE extends DetectionBase {
 				$difference = abs($deltaY - $lastDeltaY);
 
 				if ($difference < $this->maxDiff && $this->preVL++ > 4) {
-					$this->addVL(1);
-					$this->revertMovement();
-					if ($this->overflowVL()) {
-						$this->fail("diff=$difference");
-					}
-				} else {
+                    $this->addVL(1, "diff=$difference");
+                    $this->revertMovement();
+                    if ($this->overflowVL()) {
+                        $this->fail("diff=$difference");
+                    }
+                } else {
 					$this->preVL *= $this->reward;
 				}
 			}

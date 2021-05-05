@@ -47,15 +47,15 @@ class FastBreakA extends DetectionBase {
 			$actualTime = ceil(microtime(true) * 20) - $this->breakTime;
 
 			if ($actualTime < $expectedTime) {
-				if ($this->getConfiguration()->isSuppress()) {
+                if ($this->getConfiguration()->isSuppress()) {
                     $event->setCancelled();
                 }
 
-				$this->addVL(1);
-				if ($this->overflowVL()) {
+                $this->addVL(1, 'diff=' . number_format($actualTime - $expectedTime, 5));
+                if ($this->overflowVL()) {
                     $this->fail('Try to break ' . $target->getName() . ' with tool= ' . $item->getVanillaName() . ' diff=' . number_format($actualTime - $expectedTime, 5));
                 }
-			}
+            }
 		}
 	}
 

@@ -34,11 +34,11 @@ class MotionA extends DetectionBase {
 			$prediction = $lastXZ * 0.98 + $user->getPlayer()->getAttributeMap()->getAttribute(Attribute::MOVEMENT_SPEED)->getValue();
 			$diff = $curt - $prediction;
 			if ($diff > 0.01) {
-				$this->addVL(1);
-				if ($this->overflowVL()) {
-					$this->fail("diff=$diff");
-				}
-			}
+                $this->addVL(1, "diff=$diff");
+                if ($this->overflowVL()) {
+                    $this->fail("diff=$diff");
+                }
+            }
 		}
 	}
 }

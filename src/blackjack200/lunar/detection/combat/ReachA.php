@@ -46,7 +46,7 @@ class ReachA extends DetectionBase {
             $info2->timeSinceTeleport() > 1.5 &&
             $this->preVL++ > 3
         ) {
-            $this->addVL(1);
+            $this->addVL(1, "max=$maxDist dist=$dist");
             $this->preVL = 2;
             if ($this->getConfiguration()->isSuppress()) {
                 $event->setCancelled();

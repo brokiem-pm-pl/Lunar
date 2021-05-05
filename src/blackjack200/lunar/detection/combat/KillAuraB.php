@@ -30,12 +30,12 @@ class KillAuraB extends DetectionBase {
 			$lastSwing = microtime(true) - $this->lastSwing;
 			// seems 4 AnimatePacket per sec
 			if ($lastSwing > $this->duration && $this->preVL++ > 2) {
-				$this->preVL = 1;
-				$this->addVL(1);
-				if ($this->overflowVL()) {
-					$this->fail("last=$lastSwing");
-				}
-			}
+                $this->preVL = 1;
+                $this->addVL(1, "last=$lastSwing");
+                if ($this->overflowVL()) {
+                    $this->fail("last=$lastSwing");
+                }
+            }
 		}
 	}
 }

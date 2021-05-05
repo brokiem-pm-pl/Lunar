@@ -37,12 +37,12 @@ class FlyA extends DetectionBase {
 				$difference = abs($deltaY - $predicted);
 
 				if ($difference > 0.015 && abs($predicted) > 0.005 && $this->preVL++ > 4) {
-					$this->addVL(1);
-					$this->revertMovement();
-					if ($this->overflowVL()) {
-						$this->fail("diff=$difference pred=$predicted");
-					}
-				}
+                    $this->addVL(1, "diff=$difference pred=$predicted");
+                    $this->revertMovement();
+                    if ($this->overflowVL()) {
+                        $this->fail("diff=$difference pred=$predicted");
+                    }
+                }
 			}
 		}
 	}

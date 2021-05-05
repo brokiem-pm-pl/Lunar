@@ -22,7 +22,7 @@ class AutoClicker extends DetectionBase {
     public function check(...$data): void {
         $CPS = $this->getUser()->CPS;
         if ($CPS >= $this->maxCPS) {
-            $this->addVL(1);
+            $this->addVL(1, "CPS=$CPS");
             if ($this->overflowVL()) {
                 $this->fail("CPS=$CPS");
             }

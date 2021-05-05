@@ -36,13 +36,13 @@ class SpeedC extends DetectionBase {
 				$user->getExpiredInfo()->duration('flight') > 1
 			) {
 				if ($this->preVL++ > 2) {
-					$this->addVL(1);
-					$this->preVL = 0;
-					$this->revertMovement();
-					if ($this->overflowVL()) {
-						$this->fail("A=$deltaXZ E=$maxSpeed");
-					}
-				}
+                    $this->addVL(1, "A=$deltaXZ E=$maxSpeed");
+                    $this->preVL = 0;
+                    $this->revertMovement();
+                    if ($this->overflowVL()) {
+                        $this->fail("A=$deltaXZ E=$maxSpeed");
+                    }
+                }
 			} elseif ($deltaXZ > 0) {
 				$this->preVL *= $this->reward;
 			}

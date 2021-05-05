@@ -29,28 +29,25 @@ abstract class DetectionBase implements Detection {
      * @param DetectionConfiguration $data
      * @phpstan-ignore-next-line
      */
-	public function __construct(User $user, string $name, string $fmt, ?string $webhookFmt, $data) {
-		$this->user = $user;
-		$this->name = $name;
-		$this->fmt = $fmt;
-		$this->configuration = $data;
-	}
+    public function __construct(User $user, string $name, string $fmt, ?string $webhookFmt, $data) {
+        $this->user = $user;
+        $this->name = $name;
+        $this->fmt = $fmt;
+        $this->configuration = $data;
+    }
 
-	/** @param numeric $VL */
-	public function addVL($VL, ?string $message = null, bool $silent = false) : void {
-		$this->VL += $VL;
-		if ($message !== null) {
-			$this->alert($message);
-		}
-		if (!$silent) {
-			$this->alert("VL=$this->VL");
-		}
-	}
+    /** @param numeric $VL */
+    public function addVL($VL, ?string $message = null): void {
+        $this->VL += $VL;
+        if ($message !== null) {
+            $this->alert($message);
+        }
+    }
 
-	public function alert(string $message) : void {
+    public function alert(string $message): void {
         foreach ($this->getUser()->getPlayer()->getServer()->getOnlinePlayers() as $onlinePlayer) {
             if ($onlinePlayer->hasPermission("lunar.alert.notify")) {
-                $onlinePlayer->sendMessage(Lunar::getInstance()->getPrefix() . " [{$this->user->getPlayer()->getName()}]: $this->name ($this->VL/{$this->getConfiguration()->getMaxVL()}) [$message]");
+                $onlinePlayer->sendMessage(" [ALERT] [{$this->user->getPlayer()->getName()}]: $this->name ($this->VL/{$this->getConfiguration()->getMaxVL()}) [$message]");
             }
         }
     }
@@ -97,7 +94,7 @@ abstract class DetectionBase implements Detection {
 
         foreach ($this->getUser()->getPlayer()->getServer()->getOnlinePlayers() as $onlinePlayer) {
             if ($onlinePlayer->hasPermission("lunar.alert.notify")) {
-                $onlinePlayer->sendMessage(Lunar::getInstance()->getPrefix() . " [{$this->user->getPlayer()->getName()}]: $this->name ($this->VL/{$this->getConfiguration()->getMaxVL()})");
+                $onlinePlayer->sendMessage(" [FAIL] [{$this->user->getPlayer()->getName()}]: $this->name ($this->VL/{$this->getConfiguration()->getMaxVL()})");
             }
         }
 
@@ -160,6 +157,7 @@ abstract class DetectionBase implements Detection {
             $webhook->send($msg);
         }
 
+        /** @phpstan-ignore-next-line */
         LeafAPI::kickPlayer($player->getName(), "0 " . Lunar::getInstance()->getPrefix() . "§l> §rKicked (code=" . $code . ")\nContact staff with a screenshot of this message if this issue persists");
     }
 
