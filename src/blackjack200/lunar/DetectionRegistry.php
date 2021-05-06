@@ -30,86 +30,86 @@ use blackjack200\lunar\detection\packet\ClientDataFaker;
 use blackjack200\lunar\user\User;
 
 final class DetectionRegistry {
-	/** @var DetectionConfiguration[] */
-	private static array $configurations = [];
+    /** @var DetectionConfiguration[] */
+    private static array $configurations = [];
 
-	private function __construct() { }
+    private function __construct() { }
 
-	public static function initConfig() : void {
-		$detections = [
-			'AutoClicker' => AutoClicker::class,
-			'FastBreakA' => FastBreakA::class,
-			'NukerA' => NukerA::class,
+    public static function initConfig(): void {
+        $detections = [
+            'AutoClicker' => AutoClicker::class,
+            'FastBreakA' => FastBreakA::class,
+            'NukerA' => NukerA::class,
 
-			'MultiAura' => MultiAura::class,
-			'ReachA' => ReachA::class,
-			'VelocityB' => VelocityB::class,
-			'KillAuraA' => KillAuraA::class,
-			'KillAuraB' => KillAuraB::class,
+            'MultiAura' => MultiAura::class,
+            'ReachA' => ReachA::class,
+            'VelocityB' => VelocityB::class,
+            'KillAuraA' => KillAuraA::class,
+            'KillAuraB' => KillAuraB::class,
 
-			'AirSwim' => AirSwim::class,
-			'AntiImmobile' => AntiImmobile::class,
-			'SpeedA' => SpeedA::class,
-			'SpeedC' => SpeedC::class,
-			'MotionA' => MotionA::class,
-			'MotionB' => MotionB::class,
-			'FlyA' => FlyA::class,
-			'FlyB' => FlyB::class,
-			'FlyE' => FlyE::class,
+            'AirSwim' => AirSwim::class,
+            'AntiImmobile' => AntiImmobile::class,
+            'SpeedA' => SpeedA::class,
+            'SpeedC' => SpeedC::class,
+            'MotionA' => MotionA::class,
+            'MotionB' => MotionB::class,
+            'FlyA' => FlyA::class,
+            'FlyB' => FlyB::class,
+            'FlyE' => FlyE::class,
 
-			'BadPacketA' => BadPacketA::class,
-			'BadPacketB' => BadPacketB::class,
-			'BadPacketC' => BadPacketC::class,
-			'ClientDataFaker' => ClientDataFaker::class,
-		];
+            'BadPacketA' => BadPacketA::class,
+            'BadPacketB' => BadPacketB::class,
+            'BadPacketC' => BadPacketC::class,
+            'ClientDataFaker' => ClientDataFaker::class,
+        ];
 
-		foreach ($detections as $name => $class) {
-			self::register($class, $name, false);
-		}
-	}
+        foreach ($detections as $name => $class) {
+            self::register($class, $name, false);
+        }
+    }
 
-	private static function register(string $class, string $name, bool $object) : void {
-		self::$configurations[$class] = new DetectionConfiguration(
-			$class,
-			$name,
-			Lunar::getInstance()->getConfig()->get($name),
-			$object
-		);
-	}
+    private static function register(string $class, string $name, bool $object): void {
+        self::$configurations[$class] = new DetectionConfiguration(
+            $class,
+            $name,
+            Lunar::getInstance()->getConfig()->get($name),
+            $object
+        );
+    }
 
-	public static function getConfigurations() : array {
-		return self::$configurations;
-	}
+    public static function getConfigurations(): array {
+        return self::$configurations;
+    }
 
-	/**
-	 * @return DetectionBase[]
-	 */
-	public static function getDetections(User $user) : array {
-		$detections = [];
-		foreach (self::$configurations as $configuration) {
-			$detection = self::create($user, $configuration);
-			if ($detection !== null) {
-				$detections[$configuration->getClass()] = $detection;
-			}
-		}
-		return $detections;
-	}
+    /**
+     * @return DetectionBase[]
+     */
+    public static function getDetections(User $user): array {
+        $detections = [];
+        foreach (self::$configurations as $configuration) {
+            $detection = self::create($user, $configuration);
+            if ($detection !== null) {
+                $detections[$configuration->getClass()] = $detection;
+            }
+        }
+        return $detections;
+    }
 
-	private static function create(User $user, DetectionConfiguration $configuration) : ?DetectionBase {
-		if ($configuration->isEnable()) {
-			$class = $configuration->getClass();
-			return new $class(
-				$user,
-				$configuration->getName(),
-				Lunar::getInstance()->getFormat(),
-				Lunar::getInstance()->getWebhookFormat(),
-				clone $configuration
-			);
-		}
-		return null;
-	}
+    private static function create(User $user, DetectionConfiguration $configuration): ?DetectionBase {
+        if ($configuration->isEnable()) {
+            $class = $configuration->getClass();
+            return new $class(
+                $user,
+                $configuration->getName(),
+                Lunar::getInstance()->getFormat(),
+                Lunar::getInstance()->getWebhookFormat(),
+                clone $configuration
+            );
+        }
+        return null;
+    }
 
-	public static function unregister(string $class) : void {
-		unset(self::$configurations[$class]);
-	}
+    public static function unregister(string $class): void {
+        unset(self::$configurations[$class]);
+    }
 }

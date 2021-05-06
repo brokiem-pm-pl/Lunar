@@ -29,5 +29,5 @@ class AutoClicker extends DetectionBase {
         } else {
             $this->VL *= $this->getConfiguration()->getReward();
         }
-	}
+    }
 }

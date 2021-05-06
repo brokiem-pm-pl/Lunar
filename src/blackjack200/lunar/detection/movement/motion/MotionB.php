@@ -10,19 +10,19 @@ use pocketmine\network\mcpe\protocol\DataPacket;
 use pocketmine\network\mcpe\protocol\MovePlayerPacket;
 
 class MotionB extends DetectionBase {
-	public function handleClient(DataPacket $packet) : void {
-		if ($packet instanceof MovePlayerPacket) {
-			$user = $this->getUser();
-			$info = $user->getMovementInfo();
-			if (
-				!$info->inVoid &&
+    public function handleClient(DataPacket $packet): void {
+        if ($packet instanceof MovePlayerPacket) {
+            $user = $this->getUser();
+            $info = $user->getMovementInfo();
+            if (
+                !$info->inVoid &&
                 $info->checkFly &&
                 !$user->getActionInfo()->isFlying &&
                 $info->timeSinceTeleport() > 2 &&
                 $user->timeSinceJoin() > 10 &&
                 $user->getExpiredInfo()->duration('flight') > 2 &&
                 $user->getExpiredInfo()->duration('checkFly') > 0.25
-			) {
+            ) {
                 $deltaY = $info->moveDelta->y;
 
                 $modifierJump = $user->getEffectLevel(Effect::JUMP) * 0.1;
@@ -38,6 +38,6 @@ class MotionB extends DetectionBase {
                     }
                 }
             }
-		}
-	}
+        }
+    }
 }

@@ -11,14 +11,14 @@ use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\PlayerActionPacket;
 
 class KillAuraA extends DetectionBase {
-	protected float $radius;
-	protected int $min;
-	protected int $max;
-	protected Slapper $slapper;
+    protected float $radius;
+    protected int $min;
+    protected int $max;
+    protected Slapper $slapper;
 
-	public function __construct(User $user, string $name, string $fmt, ?string $webhookFmt, $data) {
-		parent::__construct($user, $name, $fmt, $webhookFmt, $data);
-		$this->radius = (float) $this->getConfiguration()->getExtraData()->Radius;
+    public function __construct(User $user, string $name, string $fmt, ?string $webhookFmt, $data) {
+        parent::__construct($user, $name, $fmt, $webhookFmt, $data);
+        $this->radius = (float)$this->getConfiguration()->getExtraData()->Radius;
         $this->min = (int)$this->getConfiguration()->getExtraData()->Random->Y->Min;
         $this->max = (int)$this->getConfiguration()->getExtraData()->Random->Y->Max;
 
@@ -53,8 +53,8 @@ class KillAuraA extends DetectionBase {
         }
     }
 
-	public function finalize() : void {
-		$this->slapper->close();
-		parent::finalize();
-	}
+    public function finalize(): void {
+        $this->slapper->close();
+        parent::finalize();
+    }
 }

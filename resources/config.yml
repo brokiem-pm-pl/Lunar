@@ -7,7 +7,7 @@ Format: "[DETECTION_NAME] [PLAYER_NAME]: MSG"
 # Replace Config file by default
 Replace: true
 
-webhook-url: "https://discord.com/api/webhooks/832535287552802867/oxYxLmvIJ2a4Nxt0ecs8m9ZzkYdvaKHf52G6AckeBJwW1qjRiMPpdtKtYaNVIFP3Nhhx"
+webhook-url: ""
 # Punishment(BAN, KICK, ALERT, IGNORE)
 
 # Check for wrong edition provided and DeviceModel
@@ -121,7 +121,7 @@ FlyA:
 FlyB:
   Enable: true
   Punishment: KICK
-  MaxVL: 30
+  MaxVL: 40
   Suppress: true
   Reward: 0.85
 
@@ -129,7 +129,7 @@ FlyB:
 FlyE:
   Enable: true
   Punishment: KICK
-  MaxVL: 30
+  MaxVL: 40
   Suppress: false
   MaxDiff: 0.01
   Reward: 0.88

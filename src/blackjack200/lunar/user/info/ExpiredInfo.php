@@ -25,11 +25,11 @@ final class ExpiredInfo {
         if (!$this->data->hasKey($k)) {
             $this->data->put($k, microtime(true));
         }
-	}
+    }
 
     /** @phpstan-ignore-next-line */
-	public function duration($k) : float {
-		$this->lazy($k);
-		return microtime(true) - $this->data->get($k);
-	}
+    public function duration($k): float {
+        $this->lazy($k);
+        return microtime(true) - $this->data->get($k);
+    }
 }

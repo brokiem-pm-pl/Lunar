@@ -11,22 +11,22 @@ use pocketmine\command\CommandSender;
 use pocketmine\utils\TextFormat;
 
 class DetectionListCommand extends Command {
-	public function __construct() {
-		parent::__construct('aclist', 'List Anticheat Detections', '/aclist');
-		$this->setPermission('lunar.list');
-	}
+    public function __construct() {
+        parent::__construct('aclist', 'List Anticheat Detections', '/aclist');
+        $this->setPermission('lunar.list');
+    }
 
-	public function execute(CommandSender $sender, string $commandLabel, array $args) {
-		if ($this->testPermission($sender)) {
-			$str = "§r§7Detections:\n";
-			foreach (DetectionRegistry::getConfigurations() as $configuration) {
+    public function execute(CommandSender $sender, string $commandLabel, array $args) {
+        if ($this->testPermission($sender)) {
+            $str = "§r§7Detections:\n";
+            foreach (DetectionRegistry::getConfigurations() as $configuration) {
                 $e = $configuration->isEnable();
                 $data = $e ? TextFormat::GREEN : TextFormat::RED;
                 $data .= Boolean::btos($e);
                 $str .= sprintf("§r§f%s §7Enabled=§f%s\n", $configuration->getName(), $data);
             }
 
-			$sender->sendMessage(rtrim($str));
-		}
-	}
+            $sender->sendMessage(rtrim($str));
+        }
+    }
 }

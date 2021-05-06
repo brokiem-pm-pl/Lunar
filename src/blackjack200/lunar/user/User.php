@@ -17,10 +17,11 @@ use pocketmine\network\mcpe\protocol\StartGamePacket;
 use pocketmine\Player;
 
 final class User implements DetectionTrigger {
-	public LoginData $loginData;
-	public StartGamePacket $startGame;
-	public int $CPS = 0;
-	public float $lastHurt;
+    public LoginData $loginData;
+    public StartGamePacket $startGame;
+    public int $CPS = 0;
+    public float $lastHurt;
+    public bool $isKicked = false;
     private Player $player;
     /** @var Detection[] */
     private array $detections;
@@ -31,7 +32,6 @@ final class User implements DetectionTrigger {
     private ExpiredInfo $expiredInfo;
     private float $joinTime;
     private bool $closed = false;
-    public bool $isKicked = false;
 
     public function __construct(Player $player) {
         $this->player = $player;
@@ -42,19 +42,19 @@ final class User implements DetectionTrigger {
         $this->expiredInfo = new ExpiredInfo(32);
         $this->processors[LoginProcessor::class] = new LoginProcessor($this);
         $this->processors[InGameProcessor::class] = new InGameProcessor($this);
-		$this->processors[MovementProcessor::class] = new MovementProcessor($this);
-		$this->processors[PlayerActionProcessor::class] = new PlayerActionProcessor($this);
+        $this->processors[MovementProcessor::class] = new MovementProcessor($this);
+        $this->processors[PlayerActionProcessor::class] = new PlayerActionProcessor($this);
 
-		$this->detections = DetectionRegistry::getDetections($this);
-	}
+        $this->detections = DetectionRegistry::getDetections($this);
+    }
 
-	public function timeSinceHurt() : float { return microtime(true) - $this->lastHurt; }
+    public function timeSinceHurt(): float { return microtime(true) - $this->lastHurt; }
 
-	public function close() : void {
-		$this->closed = true;
-		foreach ($this->detections as $detection) {
-			$detection->finalize();
-		}
+    public function close(): void {
+        $this->closed = true;
+        foreach ($this->detections as $detection) {
+            $detection->finalize();
+        }
 
         foreach ($this->processors as $processor) {
             $processor->finalize();
@@ -90,22 +90,22 @@ final class User implements DetectionTrigger {
 
     public function getProcessors(): array { return $this->processors; }
 
-	public function getPlayer() : Player { return $this->player; }
+    public function getPlayer(): Player { return $this->player; }
 
-	public function getMovementInfo() : PlayerMovementInfo { return $this->moveData; }
+    public function getMovementInfo(): PlayerMovementInfo { return $this->moveData; }
 
-	public function getActionInfo() : PlayerActionInfo { return $this->actionInfo; }
+    public function getActionInfo(): PlayerActionInfo { return $this->actionInfo; }
 
-	public function getExpiredInfo() : ExpiredInfo { return $this->expiredInfo; }
+    public function getExpiredInfo(): ExpiredInfo { return $this->expiredInfo; }
 
-	public function timeSinceJoin() : float { return microtime(true) - $this->joinTime; }
+    public function timeSinceJoin(): float { return microtime(true) - $this->joinTime; }
 
-	public function getEffectLevel(int $id) : int {
-		$level = 0;
-		$effect = $this->player->getEffect($id);
-		if ($effect !== null) {
-			$level = $effect->getEffectLevel();
-		}
-		return $level;
-	}
+    public function getEffectLevel(int $id): int {
+        $level = 0;
+        $effect = $this->player->getEffect($id);
+        if ($effect !== null) {
+            $level = $effect->getEffectLevel();
+        }
+        return $level;
+    }
 }

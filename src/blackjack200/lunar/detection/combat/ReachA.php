@@ -24,11 +24,11 @@ class ReachA extends DetectionBase {
         }
         /** @var Player $damager */
         $damager = $event->getDamager();
-		/** @var Player $damaged */
-		$damaged = $event->getEntity();
-		$user = $this->getUser();
-		$user2 = UserManager::get($damaged);
-		//should not happened
+        /** @var Player $damaged */
+        $damaged = $event->getEntity();
+        $user = $this->getUser();
+        $user2 = UserManager::get($damaged);
+        //should not happened
         assert($user2 !== null);
         assert($damager === $this->getUser()->getPlayer());
 
@@ -50,16 +50,16 @@ class ReachA extends DetectionBase {
             $this->preVL = 2;
             $event->setCancelled();
 
-			if ($this->overflowVL()) {
-				$this->fail("max=$maxDist dist=$dist");
-			}
-		}
-	}
+            if ($this->overflowVL()) {
+                $this->fail("max=$maxDist dist=$dist");
+            }
+        }
+    }
 
-	//reference: https://github.com/Bavfalcon9/Mavoric/blob/03abce64998ea29271d39bbad913fded275e20ff/src/Bavfalcon9/Mavoric/Cheat/Combat/Reach.php#L59-L62
-	public function getAllowedDistance() : float {
+    //reference: https://github.com/Bavfalcon9/Mavoric/blob/03abce64998ea29271d39bbad913fded275e20ff/src/Bavfalcon9/Mavoric/Cheat/Combat/Reach.php#L59-L62
+    public function getAllowedDistance(): float {
         $player = $this->getUser()->getPlayer();
         $projected = $player->onGround ? 5.5 : 6.2;
-        return (mt_rand(50, 130) * 0.002) + $projected;
+        return (mt_rand(70, 180) * 0.002) + $projected;
     }
 }

@@ -11,17 +11,17 @@ use pocketmine\network\mcpe\protocol\DataPacket;
 use pocketmine\network\mcpe\protocol\MovePlayerPacket;
 
 class AntiImmobile extends DetectionBase {
-	private static Vector3 $zero;
+    private static Vector3 $zero;
 
-	public function __construct(User $user, string $name, string $fmt, ?string $webhookFmt, $data) {
-		parent::__construct($user, $name, $fmt, $webhookFmt, $data);
-		if (!isset(self::$zero)) {
-			self::$zero = new Vector3();
-		}
-	}
+    public function __construct(User $user, string $name, string $fmt, ?string $webhookFmt, $data) {
+        parent::__construct($user, $name, $fmt, $webhookFmt, $data);
+        if (!isset(self::$zero)) {
+            self::$zero = new Vector3();
+        }
+    }
 
-	public function handleClient(DataPacket $packet) : void {
-		if ($packet instanceof MovePlayerPacket) {
+    public function handleClient(DataPacket $packet): void {
+        if ($packet instanceof MovePlayerPacket) {
             $user = $this->getUser();
             $info = $user->getMovementInfo();
             $dist = $info->moveDelta->distanceSquared(self::$zero);
@@ -35,5 +35,5 @@ class AntiImmobile extends DetectionBase {
                 $this->revertMovement();
             }
         }
-	}
+    }
 }

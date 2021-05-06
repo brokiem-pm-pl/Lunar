@@ -11,9 +11,9 @@ use pocketmine\network\mcpe\protocol\PlayerAuthInputPacket;
 use pocketmine\network\mcpe\protocol\types\PlayerMovementType;
 
 class BadPacketB extends DetectionBase {
-	private int $type;
+    private int $type;
 
-	public function handleClient(DataPacket $packet) : void {
+    public function handleClient(DataPacket $packet): void {
         /** @phpstan-ignore-next-line */
         if ($packet::NETWORK_ID === MovePlayerPacket::NETWORK_ID and
             $this->getMovementType() !== PlayerMovementType::LEGACY or
@@ -24,17 +24,17 @@ class BadPacketB extends DetectionBase {
         }
     }
 
-	private function getMovementType() : int {
-		if (!isset($this->type)) {
-			$this->type = $this->getUser()->startGame->playerMovementSettings->getMovementType();
-		}
-		return $this->type;
-	}
+    private function getMovementType(): int {
+        if (!isset($this->type)) {
+            $this->type = $this->getUser()->startGame->playerMovementSettings->getMovementType();
+        }
+        return $this->type;
+    }
 
-	private function error(DataPacket $packet) : void {
-		$this->addVL(1);
-		if ($this->overflowVL()) {
-			$this->fail("type=$this->type pid=" . $packet::NETWORK_ID);
-		}
-	}
+    private function error(DataPacket $packet): void {
+        $this->addVL(1);
+        if ($this->overflowVL()) {
+            $this->fail("type=$this->type pid=" . $packet::NETWORK_ID);
+        }
+    }
 }

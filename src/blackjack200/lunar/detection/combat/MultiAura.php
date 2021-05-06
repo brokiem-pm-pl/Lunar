@@ -34,13 +34,13 @@ class MultiAura extends DetectionBase {
         $distance = $damager->distance($victim);
         if ($distance <= 1.5) {
             return;
-		}
+        }
 
-		if (!in_array(spl_object_hash($victim), $this->targets, true)) {
-			$this->targets[] = spl_object_hash($victim);
-		}
+        if (!in_array(spl_object_hash($victim), $this->targets, true)) {
+            $this->targets[] = spl_object_hash($victim);
+        }
 
-		if (count($this->targets) >= $this->max && ($this->time + 0.20) >= microtime(true)) {
+        if (count($this->targets) >= $this->max && ($this->time + 0.20) >= microtime(true)) {
             $inTime = microtime(true) - ($this->time);
             $this->addVL(1, 'MultiAura detected');
             $event->setCancelled();
@@ -50,9 +50,9 @@ class MultiAura extends DetectionBase {
             }
         }
 
-		if (($this->time + 0.25) <= microtime(true)) {
-			$this->time = microtime(true);
-			$this->targets = [];
-		}
-	}
+        if (($this->time + 0.25) <= microtime(true)) {
+            $this->time = microtime(true);
+            $this->targets = [];
+        }
+    }
 }

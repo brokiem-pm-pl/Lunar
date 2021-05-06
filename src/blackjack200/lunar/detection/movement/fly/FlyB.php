@@ -9,20 +9,20 @@ use pocketmine\network\mcpe\protocol\DataPacket;
 use pocketmine\network\mcpe\protocol\PlayerActionPacket;
 
 class FlyB extends DetectionBase {
-	public function handleClient(DataPacket $packet) : void {
-		$info = $this->getUser()->getMovementInfo();
-		if ($packet instanceof PlayerActionPacket &&
+    public function handleClient(DataPacket $packet): void {
+        $info = $this->getUser()->getMovementInfo();
+        if ($packet instanceof PlayerActionPacket &&
             $packet->action === PlayerActionPacket::ACTION_JUMP &&
             !$info->inVoid2 &&
             !$info->onGround &&
             !$this->getUser()->getPlayer()->getAllowFlight() &&
             $info->timeSinceTeleport() > 1.5
-		) {
+        ) {
             $this->addVL(1, "off=$info->inAirTick");
             $this->revertMovement();
             if ($this->overflowVL()) {
                 $this->fail("off=$info->inAirTick");
             }
         }
-	}
+    }
 }

@@ -18,14 +18,14 @@ use pocketmine\scheduler\ClosureTask;
 abstract class DetectionBase implements Detection {
     protected float $preVL = 0;
     protected float $VL = 0;
-	/** @var User */
-	private $user;
-	/** @var mixed */
-	private $configuration;
-	private string $name;
-	private string $fmt;
+    /** @var User */
+    private $user;
+    /** @var mixed */
+    private $configuration;
+    private string $name;
+    private string $fmt;
 
-	/**
+    /**
      * @param DetectionConfiguration $data
      * @phpstan-ignore-next-line
      */
@@ -47,6 +47,10 @@ abstract class DetectionBase implements Detection {
             $this->alert($message);
         }
     }
+
+    final public function getUser(): User { return $this->user; }
+
+    final public function getConfiguration(): DetectionConfiguration { return $this->configuration; }
 
     public function alert(string $message): void {
         if ((int)$this->VL === 2 or (int)$this->VL === 8 or (int)$this->VL === 15 or (int)$this->VL === (int)$this->getConfiguration()->getMaxVL()) {
@@ -76,26 +80,7 @@ abstract class DetectionBase implements Detection {
         }
     }
 
-	final protected function format(string $fmt, string $message, bool $prefix = true) : string {
-        $cfg = $this->getConfiguration();
-        return sprintf('%s%s', $prefix ? Lunar::getInstance()->getPrefix() . ' ' : '',
-            Objects::replace($fmt, '[%s]', [
-                    'MSG' => $message,
-                    'DETECTION_NAME' => $this->name,
-                    'PLAYER_NAME' => $this->user->getPlayer()->getName(),
-                    'MAX_VL' => $cfg->getMaxVL(),
-                    'VL' => $this->VL,
-                    'PRE_VL' => $this->preVL,
-                    'PUNISHMENT' => $cfg->getPunishment(),
-                    'PUNISHMENT_STRING' => Punishment::toString($cfg->getPunishment())
-                ]
-            )
-        );
-    }
-
-	final public function getConfiguration() : DetectionConfiguration { return $this->configuration; }
-
-	public function fail(string $message) : void {
+    public function fail(string $message): void {
         if ($this->getUser()->isKicked or (int)$this->VL > $this->getConfiguration()->getMaxVL()) {
             return;
         }
@@ -111,7 +96,7 @@ abstract class DetectionBase implements Detection {
         }));
     }
 
-	final protected function failImpl(string $message) : void {
+    final protected function failImpl(string $message): void {
         switch ($this->getConfiguration()->getPunishment()) {
             case Punishment::BAN():
             case Punishment::KICK():
@@ -121,25 +106,7 @@ abstract class DetectionBase implements Detection {
         }
     }
 
-    public function log(string $message, string $code = "null"): void {
-        $fmt = sprintf('[%s] Code: %s, Name: %s, Detection: %s, Message: %s', time(), $code, $this->getUser()->getPlayer()->getName(), $this->name, $message);
-        Lunar::getInstance()->getLogger()->info($fmt);
-        Lunar::getInstance()->getDetectionLogger()->write($fmt);
-    }
-
-    final public function getUser(): User { return $this->user; }
-
-    public function generateCode(int $length = 5): string {
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $charactersLength = strlen($characters);
-        $randomString = '';
-        for ($i = 0; $i < $length; $i++) {
-            $randomString .= $characters[mt_rand(0, $charactersLength - 1)];
-        }
-        return $randomString;
-    }
-
-	public function kick(string $message) : void {
+    public function kick(string $message): void {
         $code = $this->generateCode();
         $player = $this->getUser()->getPlayer();
         $type = $this->name;
@@ -175,18 +142,51 @@ abstract class DetectionBase implements Detection {
         LeafAPI::kickPlayer($player->getName(), Lunar::getInstance()->getPrefix() . "§l> §rKicked (code=" . $code . ")\nContact staff with a screenshot of this message if this issue persists");
     }
 
-	public function alertTitle(string $message) : void {
-		$this->getUser()->getPlayer()->sendTitle('§g', $this->format($this->fmt, $message), 2, 3, 5);
-	}
+    public function generateCode(int $length = 5): string {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[mt_rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
+    }
 
-	public function reset() : void {
-		$this->VL = 0;
-		$this->preVL = 0;
-	}
+    public function log(string $message, string $code = "null"): void {
+        $fmt = sprintf('[%s] Code: %s, Name: %s, Detection: %s, Message: %s', time(), $code, $this->getUser()->getPlayer()->getName(), $this->name, $message);
+        Lunar::getInstance()->getLogger()->info($fmt);
+        Lunar::getInstance()->getDetectionLogger()->write($fmt);
+    }
 
-	public function overflowVL() : bool {
-		$cfg = $this->getConfiguration();
-		return $cfg->hasMaxVL() && $this->VL >= $cfg->getMaxVL();
+    public function alertTitle(string $message): void {
+        $this->getUser()->getPlayer()->sendTitle('§g', $this->format($this->fmt, $message), 2, 3, 5);
+    }
+
+    final protected function format(string $fmt, string $message, bool $prefix = true): string {
+        $cfg = $this->getConfiguration();
+        return sprintf('%s%s', $prefix ? Lunar::getInstance()->getPrefix() . ' ' : '',
+            Objects::replace($fmt, '[%s]', [
+                    'MSG' => $message,
+                    'DETECTION_NAME' => $this->name,
+                    'PLAYER_NAME' => $this->user->getPlayer()->getName(),
+                    'MAX_VL' => $cfg->getMaxVL(),
+                    'VL' => $this->VL,
+                    'PRE_VL' => $this->preVL,
+                    'PUNISHMENT' => $cfg->getPunishment(),
+                    'PUNISHMENT_STRING' => Punishment::toString($cfg->getPunishment())
+                ]
+            )
+        );
+    }
+
+    public function reset(): void {
+        $this->VL = 0;
+        $this->preVL = 0;
+    }
+
+    public function overflowVL(): bool {
+        $cfg = $this->getConfiguration();
+        return $cfg->hasMaxVL() && $this->VL >= $cfg->getMaxVL();
     }
 
     final public function getName(): string { return $this->name; }
@@ -210,10 +210,10 @@ abstract class DetectionBase implements Detection {
         if ($this->configuration->isSuppress()) {
             $user = $this->user;
             $pos = $user->getMovementInfo()->locationHistory->pop();
-			if ($pos !== null) {
-				$player = $user->getPlayer();
-				$player->teleport($pos, $player->yaw);
-			}
-		}
-	}
+            if ($pos !== null) {
+                $player = $user->getPlayer();
+                $player->teleport($pos, $player->yaw);
+            }
+        }
+    }
 }

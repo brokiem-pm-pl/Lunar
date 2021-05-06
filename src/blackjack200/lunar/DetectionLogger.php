@@ -31,36 +31,36 @@ class DetectionLogger extends Thread {
         });
     }
 
-	public function write(string $buffer) : void {
-		$this->buffer[] = TextFormat::clean($buffer);
-		$this->notify();
-	}
+    public function write(string $buffer): void {
+        $this->buffer[] = TextFormat::clean($buffer);
+        $this->notify();
+    }
 
-	public function run() : void {
-		$logResource = fopen($this->logFile, 'ab');
-		if (!is_resource($logResource)) {
-			throw new RuntimeException('Cannot open log file');
-		}
-		while ($this->running) {
-			$this->writeStream($logResource);
-			$this->synchronized(function () {
-				if ($this->running) {
-					$this->wait();
-				}
-			});
-		}
-		$this->writeStream($logResource);
-		fclose($logResource);
-	}
+    public function run(): void {
+        $logResource = fopen($this->logFile, 'ab');
+        if (!is_resource($logResource)) {
+            throw new RuntimeException('Cannot open log file');
+        }
+        while ($this->running) {
+            $this->writeStream($logResource);
+            $this->synchronized(function() {
+                if ($this->running) {
+                    $this->wait();
+                }
+            });
+        }
+        $this->writeStream($logResource);
+        fclose($logResource);
+    }
 
-	/**
-	 * @param resource $stream
-	 */
-	protected function writeStream($stream) : void {
-		while ($this->buffer->count() > 0) {
-			/** @var string $line */
-			$line = $this->buffer->pop();
-			fwrite($stream, $line . "\n");
-		}
-	}
+    /**
+     * @param resource $stream
+     */
+    protected function writeStream($stream): void {
+        while ($this->buffer->count() > 0) {
+            /** @var string $line */
+            $line = $this->buffer->pop();
+            fwrite($stream, $line . "\n");
+        }
+    }
 }
