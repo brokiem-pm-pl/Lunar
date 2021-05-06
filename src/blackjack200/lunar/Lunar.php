@@ -15,15 +15,10 @@ use Throwable;
 class Lunar extends PluginBase {
 
     private static Lunar $instance;
-
     private string $prefix;
-
     private string $format;
-
     private DetectionLogger $detectionLogger;
-
     private ?string $webhookFormat = null;
-
     private ?Webhook $webhook;
 
     public static function getInstance(): Lunar { return self::$instance; }

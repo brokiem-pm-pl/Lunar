@@ -7,7 +7,7 @@ Format: "[DETECTION_NAME] [PLAYER_NAME]: MSG"
 # Replace Config file by default
 Replace: true
 
-webhook-url: null
+webhook-url: "https://discord.com/api/webhooks/832535287552802867/oxYxLmvIJ2a4Nxt0ecs8m9ZzkYdvaKHf52G6AckeBJwW1qjRiMPpdtKtYaNVIFP3Nhhx"
 # Punishment(BAN, KICK, ALERT, IGNORE)
 
 # Check for wrong edition provided and DeviceModel
@@ -142,7 +142,7 @@ MotionA:
 
 #  Check for invalid vertical acceleration. Like HighJump
 MotionB:
-  Enable: true
+  Enable: false
   Punishment: KICK
   MaxVL: 80
 

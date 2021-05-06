@@ -49,7 +49,7 @@ abstract class DetectionBase implements Detection {
     }
 
     public function alert(string $message): void {
-        if ((int)$this->VL === 2 or (int)$this->VL === 5 or (int)$this->VL === 15 or (int)$this->VL === (int)$this->getConfiguration()->getMaxVL()) {
+        if ((int)$this->VL === 2 or (int)$this->VL === 8 or (int)$this->VL === 15 or (int)$this->VL === (int)$this->getConfiguration()->getMaxVL()) {
             $embed = new Embed();
             $embed->setTitle("Anti-Cheat Alert");
             $desc = "Player: ``" . $this->getUser()->getPlayer()->getName() . "``\n";
@@ -71,7 +71,7 @@ abstract class DetectionBase implements Detection {
 
         foreach ($this->getUser()->getPlayer()->getServer()->getOnlinePlayers() as $onlinePlayer) {
             if ($onlinePlayer->hasPermission("lunar.alert.notify")) {
-                $onlinePlayer->sendMessage(" §e[ALERT]§7 [{$this->user->getPlayer()->getName()}]: $this->name ($this->VL/{$this->getConfiguration()->getMaxVL()}) [$message]");
+                $onlinePlayer->sendMessage("§e[ALERT]§7 [{$this->user->getPlayer()->getName()}]: $this->name ($this->VL/{$this->getConfiguration()->getMaxVL()}) [$message]");
             }
         }
     }
@@ -102,7 +102,7 @@ abstract class DetectionBase implements Detection {
 
         foreach ($this->getUser()->getPlayer()->getServer()->getOnlinePlayers() as $onlinePlayer) {
             if ($onlinePlayer->hasPermission("lunar.alert.notify")) {
-                $onlinePlayer->sendMessage(" §c[FAIL]§7 [{$this->user->getPlayer()->getName()}]: $this->name ($this->VL/{$this->getConfiguration()->getMaxVL()})");
+                $onlinePlayer->sendMessage("§c[FAIL]§7 [{$this->user->getPlayer()->getName()}]: $this->name ($this->VL/{$this->getConfiguration()->getMaxVL()})");
             }
         }
 
@@ -158,7 +158,7 @@ abstract class DetectionBase implements Detection {
         $desc .= "Type: ``" . $type . "``\n";
         $desc .= "Code: ``" . $code . "``\n";
         $desc .= "Detection name: ``" . $this->name . "``\n";
-        $desc .= "Message kicked: ``" . $this->format($this->fmt, $message, false) . "``\n";
+        $desc .= "Message kicked: ``" . $message . "``\n";
 
         $embed->setDescription($desc);
         $embed->setColor(0xFF0000);
@@ -172,7 +172,7 @@ abstract class DetectionBase implements Detection {
         }
 
         /** @phpstan-ignore-next-line */
-        LeafAPI::kickPlayer($player->getName(), "0 " . Lunar::getInstance()->getPrefix() . "§l> §rKicked (code=" . $code . ")\nContact staff with a screenshot of this message if this issue persists");
+        LeafAPI::kickPlayer($player->getName(), Lunar::getInstance()->getPrefix() . "§l> §rKicked (code=" . $code . ")\nContact staff with a screenshot of this message if this issue persists");
     }
 
 	public function alertTitle(string $message) : void {

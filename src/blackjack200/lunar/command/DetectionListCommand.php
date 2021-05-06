@@ -20,11 +20,11 @@ class DetectionListCommand extends Command {
 		if ($this->testPermission($sender)) {
 			$str = "§r§7Detections:\n";
 			foreach (DetectionRegistry::getConfigurations() as $configuration) {
-				$e = $configuration->isEnable();
-				$data = $e ? TextFormat::GREEN : TextFormat::RED;
-				$data .= Boolean::btos($e);
-				$str .= sprintf(" §r§f%s §7ENABLE=§f%s\n", $configuration->getName(), $data);
-			}
+                $e = $configuration->isEnable();
+                $data = $e ? TextFormat::GREEN : TextFormat::RED;
+                $data .= Boolean::btos($e);
+                $str .= sprintf("§r§f%s §7Enabled=§f%s\n", $configuration->getName(), $data);
+            }
 
 			$sender->sendMessage(rtrim($str));
 		}
