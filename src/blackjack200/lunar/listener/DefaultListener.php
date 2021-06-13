@@ -133,7 +133,10 @@ class DefaultListener implements Listener {
     public function onPlayerDamage(EntityDamageEvent $event): void {
         $player = $event->getEntity();
         if ($player instanceof Player) {
-            UserManager::get($player)->lastHurt = microtime(true);
+            $user = UserManager::get($player);
+            if ($user !== null) {
+                $user->lastHurt = microtime(true);
+            }
         }
     }
 

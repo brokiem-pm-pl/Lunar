@@ -29,7 +29,7 @@ abstract class Processor implements Listener {
         $this->user = null;
     }
 
-    public function getUser(): User { return $this->user; }
+    public function getUser(): ?User { return $this->user; }
 
     /**
      * @param mixed $data

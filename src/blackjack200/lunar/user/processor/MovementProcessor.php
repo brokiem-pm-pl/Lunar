@@ -64,7 +64,7 @@ class MovementProcessor extends Processor {
                         $info->locationHistory->push($player->asLocation());
                     }
                     $AABB = AABB::fromPosition($location)->expandedCopy(0.5, 0.2, 0.5);
-                    $verticalBlocks = AABB::getCollisionBlocks($location->getLevel(), $AABB);
+                    $verticalBlocks = AABB::getCollisionBlocks($location->getLevelNonNull(), $AABB);
                     $info->lastOnGround = $info->onGround;
                     $info->onGround = count($player->getLevelNonNull()->getCollisionBlocks($AABB, true)) !== 0;
                     $info->lastActualOnGround = $info->actualOnGround;
