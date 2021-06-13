@@ -42,7 +42,6 @@ final class DetectionRegistry {
             'MultiAura' => MultiAura::class,
             'ReachA' => ReachA::class,
             'VelocityB' => VelocityB::class,
-            //'KillAuraA' => KillAuraA::class,
             'KillAuraB' => KillAuraB::class,
 
             //'AirSwim' => AirSwim::class,

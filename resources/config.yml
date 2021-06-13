@@ -50,18 +50,6 @@ AutoClicker:
 
 # Combat
 
-# Check for slapper hit
-KillAuraA:
-  Enable: false
-  MaxVL: 30
-  Punishment: KICK
-  AttackCooldown: 3
-  Radius: 3
-  Random:
-    Y:
-      Min: -1
-      Max: 3
-
 # Check for attack without swing arm
 KillAuraB:
   Enable: true

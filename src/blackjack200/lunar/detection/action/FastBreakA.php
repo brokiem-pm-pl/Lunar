@@ -34,11 +34,13 @@ class FastBreakA extends DetectionBase {
 
             $expectedTime = ceil($target->getBreakTime($item) * 20);
 
-            if ($effect = $player->getEffect(Effect::HASTE)) {
+            $effect = $player->getEffect(Effect::HASTE);
+            if ($effect !== null) {
                 $expectedTime *= 1 - (0.2 * $effect->getEffectLevel());
             }
 
-            if ($effect = $player->getEffect(Effect::MINING_FATIGUE)) {
+            $effect = $player->getEffect(Effect::MINING_FATIGUE);
+            if ($effect !== null) {
                 $expectedTime *= 1 + (0.3 * $effect->getEffectLevel());
             }
 
