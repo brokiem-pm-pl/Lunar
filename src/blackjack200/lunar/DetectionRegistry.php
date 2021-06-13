@@ -8,13 +8,11 @@ use blackjack200\lunar\configuration\DetectionConfiguration;
 use blackjack200\lunar\detection\action\AutoClicker;
 use blackjack200\lunar\detection\action\FastBreakA;
 use blackjack200\lunar\detection\action\NukerA;
-use blackjack200\lunar\detection\combat\KillAuraA;
 use blackjack200\lunar\detection\combat\KillAuraB;
 use blackjack200\lunar\detection\combat\MultiAura;
 use blackjack200\lunar\detection\combat\ReachA;
 use blackjack200\lunar\detection\combat\velocity\VelocityB;
 use blackjack200\lunar\detection\DetectionBase;
-use blackjack200\lunar\detection\movement\AirSwim;
 use blackjack200\lunar\detection\movement\AntiImmobile;
 use blackjack200\lunar\detection\movement\fly\FlyA;
 use blackjack200\lunar\detection\movement\fly\FlyB;
@@ -44,10 +42,10 @@ final class DetectionRegistry {
             'MultiAura' => MultiAura::class,
             'ReachA' => ReachA::class,
             'VelocityB' => VelocityB::class,
-            'KillAuraA' => KillAuraA::class,
+            //'KillAuraA' => KillAuraA::class,
             'KillAuraB' => KillAuraB::class,
 
-            'AirSwim' => AirSwim::class,
+            //'AirSwim' => AirSwim::class,
             'AntiImmobile' => AntiImmobile::class,
             'SpeedA' => SpeedA::class,
             'SpeedC' => SpeedC::class,

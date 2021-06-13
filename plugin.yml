@@ -5,6 +5,6 @@ author: Misaka
 main: blackjack200\lunar\Lunar
 
 permissions:
-    lunar.list:
-      description: List Lunar Anticheat Detections
-      default: op
+  lunar.list:
+    description: List Lunar Anticheat Detections
+    default: op

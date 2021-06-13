@@ -1,19 +1,19 @@
 <?php
 
-function git_hash() : string {
-	return shell_exec("git rev-parse HEAD");
+function git_hash(): string {
+    return shell_exec("git rev-parse HEAD");
 }
 
-function pause() : void {
-	fread(STDIN, 1);
-	fflush(STDIN);
+function pause(): void {
+    fread(STDIN, 1);
+    fflush(STDIN);
 }
 
-function new_logger() : Generator {
-	while (true) {
-		$r = yield;
-		echo '[*] ', $r, PHP_EOL;
-	}
+function new_logger(): Generator {
+    while (true) {
+        $r = yield;
+        echo '[*] ', $r, PHP_EOL;
+    }
 }
 
 $logger = new_logger();

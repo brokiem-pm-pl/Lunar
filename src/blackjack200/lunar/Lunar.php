@@ -3,14 +3,11 @@
 namespace blackjack200\lunar;
 
 use blackjack200\lunar\command\DetectionListCommand;
-use blackjack200\lunar\detection\combat\Slapper;
 use blackjack200\lunar\libs\CortexPE\DiscordWebhookAPI\Webhook;
 use blackjack200\lunar\listener\DefaultListener;
 use blackjack200\lunar\task\ProcessorSecondTrigger;
 use blackjack200\lunar\task\ProcessorTickTrigger;
-use pocketmine\entity\Entity;
 use pocketmine\plugin\PluginBase;
-use Throwable;
 
 class Lunar extends PluginBase {
 
@@ -47,15 +44,7 @@ class Lunar extends PluginBase {
         $this->prefix = $config->get('Prefix', true);
         $this->format = $config->get('Format', true);
 
-        Entity::registerEntity(Slapper::class, true, ['lunar_slapper']);
-
-        try {
-            DetectionRegistry::initConfig();
-        } catch (Throwable $e) {
-            $this->getLogger()->logException($e);
-            $this->getServer()->getPluginManager()->disablePlugin($this);
-            return;
-        }
+        DetectionRegistry::initConfig();
 
         $this->getScheduler()->scheduleRepeatingTask(new ProcessorTickTrigger(), 1);
         $this->getScheduler()->scheduleRepeatingTask(new ProcessorSecondTrigger(), 20);

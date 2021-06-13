@@ -49,7 +49,9 @@ class DefaultListener implements Listener {
     public function onPlayerQuit(PlayerQuitEvent $event): void {
         $player = $event->getPlayer();
         $user = UserManager::get($player);
-        $user->close();
+        if ($user !== null) {
+            $user->close();
+        }
         UserManager::unregister($player);
         $hash = spl_object_hash($player);
         unset($this->dirtyLoginPacket[$hash], $this->dirtyStartGamePacket[$hash]);
